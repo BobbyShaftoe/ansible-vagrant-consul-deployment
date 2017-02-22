@@ -1,0 +1,73 @@
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Cache
+.cache
+
+# Vagrant
+.vagrant
+
+# Ansible
+*.retry
+
+# Dolphin
+.directory
+
+# Icon must end with two \r
+Icon
+
+# SSH Keys/Certs et al. #
+id_rsa
+id_dsa
+known_hosts
+
+# Virtualenv
+virtual_tmp
+
+# Custom type logs
+*.err.log
+*.out.log
+
+# Data
+*.data
+
+# Python
+*.pyc
+
+# PyCharm
+*.idea
+
+# Thumbnails
+._*
+
+# Swapfiles
+*.swp
+
+# Backup files
+*.bak
+
+# My style .ARCHIVE directory
+.ARCHIVE
+
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Test output directories for ansible-container stuff, leaving the base directory for safety though
+ansible/tests/*
+
+
