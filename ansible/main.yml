@@ -1,3 +1,3 @@
-- hosts: all
+- hosts: "consul-servers"
   roles:
     - consul
