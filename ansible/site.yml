@@ -1,0 +1,8 @@
+---
+
+# talk to all hosts just so we can learn about them
+- hosts: all
+  gather_facts: True
+  roles:
+    - consul
+

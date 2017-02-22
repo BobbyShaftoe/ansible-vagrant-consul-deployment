@@ -1,0 +1,59 @@
+---
+
+
+- name: "Variables example"
+  hosts: all
+  tasks:
+  - name: "show me the iterations"
+    debug: msg="{{ item.key }} is {{item.value.username}} and {{ item.value.nickname }}"
+    with_dict: "{{ users }}"
+    vars:
+      users:
+        user1:
+          username: bar
+          nickname: barry
+        user2:
+          username: foo
+          nickname: foobar
+
+
+
+#- name: "Variables example"
+#  hosts: all
+#  tasks:
+#  - name: "show me the iterations"
+#    debug: msg={{ item.0.username }} {{ item.1.path }} then {{ item.1.permissions }} {{ item.1.path }}
+#    with_subelements:
+#      - "{{ users }}"
+#      - "{{ directories }}"
+#    vars:
+#      users:
+#        - username: bar
+#          directories:
+#            - path: /data
+#              permissions: rX
+#            - path: /js
+#              permissions: rX
+#        - username: foo
+#          directories:
+#            - path: /
+#              permissions: rwX
+
+#- name: "Variables example 2"
+#  hosts: all
+#  tasks:
+#  - name: "Flattened list"
+#    set_fact:
+#      flattened: "{{ dict.values() | sum(start=[]) }}"
+#    vars:
+#      dict:
+#        a:
+#          - 1
+#          - 2
+#          - 3
+#        b:
+#          - 1
+#          - 2
+#    debug: msg="{{ flattened }}"
+
+#Now flattened ==  [1,2,3,1,2]

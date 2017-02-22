@@ -1,0 +1,73 @@
+#- include_vars:
+#    dir: 'vars'
+
+
+- name: "Create Consul group"
+  group:
+    name: consul
+    state: present
+
+- name: "Create Consul user"
+  user:
+    name: consul
+    comment: "Consul user"
+    group: consul
+
+- name: Create Consul config directories
+  file:
+    path: "/etc/consul.d/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+      - bootstrap
+      - server
+      - client
+
+- name: "Create Consul data directory"
+  file:
+    path: /var/consul
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0755
+
+
+- name: "Show group_vars - ansible_hostname"
+  debug:  msg="{{ item['name'] }} has flag {{ item['bootstrap_flag'] }}"
+  with_items: "{{ consul_server_vars }}"
+
+- name: "Show group_vars - ip addresses"
+  debug:  msg="{{ hostvars[item]['ansible_eth1']['ipv4']['address'] }}"
+  with_items: "{{ groups['consul-servers'] }}"
+
+
+- name: "Copy service config for each server into /etc/consul.d/server"
+  template:
+    src: templates/config.json.j2
+    dest: /etc/consul.d/server/config.json
+    owner: consul
+    group: consul
+    mode: 0644
+  when: "item['server_hostname'] == inventory_hostname"
+  with_items: "{{ consul_server_vars }}"
+
+
+- name: "Show comparison between current host and host in consul-master"
+  debug:  msg="{{ groups['consul-master'][0] }} / {{ item['server_hostname'] }} / {{ inventory_hostname }}"
+  with_items: "{{ consul_server_vars }}"
+
+- name: "Copy bootstrap config for initial server /etc/consul.d/bootstrap"
+  template:
+    src: templates/bootstrap-config.json.j2
+    dest: /etc/consul.d/bootstrap/config.json
+    owner: consul
+    group: consul
+    mode: 0644
+  when: "groups['consul-master'][0] == item['server_hostname'] == inventory_hostname"
+  with_items: "{{ consul_server_vars }}"
+
+
+
+
+
+

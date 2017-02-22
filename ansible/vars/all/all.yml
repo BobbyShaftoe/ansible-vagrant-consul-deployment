@@ -1,0 +1,26 @@
+---
+
+#consul_server_vars:
+n1:
+  hostname: n1.local
+  server_flag: true
+  bootstrap_flag: false
+  encryption_key: "dabbyhNw7FNaFIxvslCebA=="
+n2:
+  hostname: n2.local
+  server_flag: true
+  bootstrap_flag: false
+  encryption_key: "sJsH/tRP6sAQNaSaVWTrDA=="
+n3:
+  hostname: n3.local
+  server_flag: true
+  bootstrap_flag: false
+  encryption_key: "7VuzL3rntKubCtqLwd/RKQ=="
+
+
+
+#  - name: server_4
+#    hostname: n4
+#    server_flag: true
+#    bootstrap_flag: false
+#    encryption_key: "XypN2iURbCU97/BoJSmYpQ=="

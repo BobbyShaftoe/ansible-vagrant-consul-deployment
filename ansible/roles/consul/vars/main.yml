@@ -1,0 +1,21 @@
+
+data_center: "local-dc-1"
+data_dir: "/var/consul"
+
+
+consul_server_vars:
+  - name: "n1"
+    server_hostname: "n1.local"
+    server_flag: "true"
+    bootstrap_flag: "false"
+    encryption_key: "dabbyhNw7FNaFIxvslCebA=="
+  - name: "n2"
+    server_hostname: "n2.local"
+    server_flag: "true"
+    bootstrap_flag: "false"
+    encryption_key: "sJsH/tRP6sAQNaSaVWTrDA=="
+  - name: "n3"
+    server_hostname: "n3.local"
+    server_flag: "true"
+    bootstrap_flag: "false"
+    encryption_key: "7VuzL3rntKubCtqLwd/RKQ=="

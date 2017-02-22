@@ -1,0 +1,18 @@
+
+{% set all_host_ips = "{{ hostvars.values() | map(attribute='ansible_host') }}" %}
+{% set other_host_ips  = "{{ all_host_ips | difference([ansible_default_ipv4.address]) | join(',') }}" %}
+
+/{
+    "bootstrap": "{{ item['bootstrap_flag'] }}",
+    "server": "{{ item['server_hostname'] }}",
+    "datacenter": "{{ data_center }}",
+    "data_dir": "{{ data_dir }}",
+    "encrypt": "{{ item['encryption_key'] }}",
+    "log_level": "INFO",
+    "enable_syslog": "true",
+    "start_join":  "{{ other_host_ips }}"
+/}
+
+
+
+
