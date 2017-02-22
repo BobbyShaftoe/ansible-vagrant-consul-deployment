@@ -1,0 +1,7 @@
+
+- hosts: "local"
+  remote_user: vagrant
+  become: False
+  gather_facts: False
+  roles:
+    - "vagrant-consul"
