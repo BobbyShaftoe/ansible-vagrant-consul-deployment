@@ -6,9 +6,3 @@
   roles:
     - "os-local"
 
-- hosts: "consul-servers"
-  remote_user: root
-  gather_facts: True
-  roles:
-    - "consul"
-

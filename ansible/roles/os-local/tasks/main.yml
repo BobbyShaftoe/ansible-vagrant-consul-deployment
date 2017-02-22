@@ -1,0 +1,9 @@
+
+
+- name: "Create host entries"
+  lineinfile:
+    dest: '/etc/hosts'
+    regexp: "^[0-9a-z. ]*{{ item['hostname'] }}"
+    line: "{{ item['ip_address'] }} {{ item['hostname'] }} {{ item['name'] }}"
+  with_items: "{{ consul_host_vars }}"
+

@@ -1,8 +1,6 @@
----
 
-# talk to all hosts just so we can learn about them
 - hosts: "consul-servers"
   gather_facts: True
   roles:
-    - consul
+    - "consul"
 

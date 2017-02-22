@@ -19,3 +19,21 @@ consul_server_vars:
     server_flag: "true"
     bootstrap_flag: "false"
     encryption_key: "dabbyhNw7FNaFIxvslCebA=="
+
+
+consul_client_vars:
+  - name: "c1"
+    client_hostname: "c1.local"
+    server_flag: "true"
+    bootstrap_flag: "false"
+    encryption_key: "dabbyhNw7FNaFIxvslCebA=="
+  - name: "c2"
+    client_hostname: "c2.local"
+    server_flag: "true"
+    bootstrap_flag: "false"
+    encryption_key: "dabbyhNw7FNaFIxvslCebA=="
+  - name: "c3"
+    client_hostname: "c3.local"
+    server_flag: "true"
+    bootstrap_flag: "false"
+    encryption_key: "dabbyhNw7FNaFIxvslCebA=="

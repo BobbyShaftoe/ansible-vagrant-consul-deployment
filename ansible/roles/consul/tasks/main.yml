@@ -39,6 +39,9 @@
 - name: "Show group_vars - ip addresses"
   debug:  msg="{{ hostvars[item]['ansible_eth1']['ipv4']['address'] }}"
   with_items: "{{ groups['consul-servers'] }}"
+#  loop_control:
+#    label: "{{item.name}}"
+### TESTING OUT LOOP_CONTROL - LABEL ###
 
 
 - name: "Copy service config for each server into /etc/consul.d/server"
@@ -50,6 +53,8 @@
     mode: 0644
   when: "item['server_hostname'] == inventory_hostname"
   with_items: "{{ consul_server_vars }}"
+
+
 
 
 - name: "Show comparison between current host and host in consul-master"
@@ -66,8 +71,10 @@
   when: "groups['consul-master'][0] == item['server_hostname'] == inventory_hostname"
   with_items: "{{ consul_server_vars }}"
 
-
-
-
-
+#  THIS IS PROB THE CORRECT WAY TO PERFORM THE CONDITIONAL CHECK ABOVE
+#  when:
+#    - groups['consul-master'][0] == item['server_hostname']
+#    - item['server_hostname'] == inventory_hostname"
+# AND ALSO REQUIRE ADDITIONAL WHEN STATEMENT #
+#    - item['server_hostname'] is defined
 
