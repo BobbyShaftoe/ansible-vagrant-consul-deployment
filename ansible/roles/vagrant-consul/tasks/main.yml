@@ -13,7 +13,7 @@
   args:
     chdir: "{{ vagrant_path }}"
   environment:
-    DEMO_BOX_NAME: "minimal/trusty64"
+    DEMO_BOX_NAME: "{{ vagrant_os_image }}"
 
 - name: "Get status of Vagrant Machines"
   command: vagrant status
