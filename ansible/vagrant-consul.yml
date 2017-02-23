@@ -1,7 +1,7 @@
 
 - hosts: "local"
-  remote_user: vagrant
-  become: False
+  remote_user: jack
+  become: True
   gather_facts: False
   roles:
     - "vagrant-consul"

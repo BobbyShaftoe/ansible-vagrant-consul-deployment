@@ -6,8 +6,16 @@
   roles:
     - "os-local"
 
+- hosts: "local"
+  remote_user: jack
+  become: False
+  gather_facts: False
+  roles:
+    - "vagrant-consul"
+
 - hosts: "consul-servers"
-  remote_user: root
+  remote_user: vagrant
+  become: True
   gather_facts: True
   roles:
     - "consul"

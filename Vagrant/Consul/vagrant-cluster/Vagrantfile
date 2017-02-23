@@ -21,10 +21,10 @@ if [ ! -e "`which consul`" ]; then
   sudo chmod a+w /etc/consul.d
 fi
 
-[ ! -d "~/.ssh" ] && mkdir ~/.ssh
-[ ! -e "~/.ssh/authorized_keys" ] && touch ~/.ssh/authorized_keys
-sed -i 's/^.*ansible.master$//g' ~/.ssh/authorized_keys
-curl https://s3.amazonaws.com/ansible-keystore/ansible_id_rsa.pub >> ~/.ssh/authorized_keys
+#[ ! -d "~/.ssh" ] && mkdir ~/.ssh
+#[ ! -e "~/.ssh/authorized_keys" ] && touch ~/.ssh/authorized_keys
+#sed -i 's/^.*ansible.master$//g' ~/.ssh/authorized_keys
+#curl https://s3.amazonaws.com/ansible-keystore/ansible_id_rsa.pub >> ~/.ssh/authorized_keys
 
 SCRIPT
 
@@ -40,6 +40,16 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = DEMO_BOX_NAME
+
+# --------------------- SETUP SSH -----------------------------#
+  # ssh settings
+  config.ssh.insert_key = false
+  config.ssh.private_key_path = ["~/.ssh/ansible_id_rsa", "~/.vagrant.d/insecure_private_key"]
+  config.vm.provision "file", source: "~/.ssh/ansible_id_rsa.pub", destination: "~/.ssh/authorized_keys"
+  config.vm.provision "shell", inline: <<-EOC
+    sudo sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
+    sudo service ssh restart
+  EOC
 
 # ---------------- DISABLE USB -------------------------------#
   config.vm.provider "virtualbox" do |vb|
