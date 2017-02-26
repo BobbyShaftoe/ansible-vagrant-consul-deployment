@@ -25,13 +25,21 @@
 
 - name: "Create Consul data directory"
   file:
-    path: /var/consul
+    path: "{{ data_dir }}"
     state: directory
     owner: consul
     group: consul
     mode: 0755
 
+- name: "Create Consul ui directory"
+  file:
+    path: "{{ ui_dir }}"
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0755
 
+### CONSUL SERVERS ###
 - name: "Show group_vars - ansible_hostname"
   debug:  msg="{{ item['name'] }} has flag {{ item['bootstrap_flag'] }}"
   with_items: "{{ consul_server_vars }}"
@@ -46,35 +54,45 @@
 
 - name: "Copy service config for each server into /etc/consul.d/server"
   template:
-    src: templates/config.json.j2
+    src: templates/server-config.j2
     dest: /etc/consul.d/server/config.json
     owner: consul
     group: consul
     mode: 0644
-  when: "item['server_hostname'] == inventory_hostname"
+  when: "item['hostname'] == inventory_hostname"
   with_items: "{{ consul_server_vars }}"
 
 
-
-
-- name: "Show comparison between current host and host in consul-master"
-  debug:  msg="{{ groups['consul-master'][0] }} / {{ item['server_hostname'] }} / {{ inventory_hostname }}"
-  with_items: "{{ consul_server_vars }}"
+#- name: "Show comparison between current host and host in consul-master"
+#  debug:  msg="{{ groups['consul-master'][0] }} / {{ item['hostname'] }} / {{ inventory_hostname }}"
+#  with_items: "{{ consul_server_vars }}"
 
 - name: "Copy bootstrap config for initial server /etc/consul.d/bootstrap"
   template:
-    src: templates/bootstrap-config.json.j2
+    src: templates/bootstrap-config.j2
     dest: /etc/consul.d/bootstrap/config.json
     owner: consul
     group: consul
     mode: 0644
-  when: "groups['consul-master'][0] == item['server_hostname'] == inventory_hostname"
+  when: "groups['consul-master'][0] == item['hostname'] == inventory_hostname"
   with_items: "{{ consul_server_vars }}"
 
 #  THIS IS PROB THE CORRECT WAY TO PERFORM THE CONDITIONAL CHECK ABOVE
 #  when:
-#    - groups['consul-master'][0] == item['server_hostname']
-#    - item['server_hostname'] == inventory_hostname"
+#    - groups['consul-master'][0] == item['hostname']
+#    - item['hostname'] == inventory_hostname"
 # AND ALSO REQUIRE ADDITIONAL WHEN STATEMENT #
-#    - item['server_hostname'] is defined
+#    - item['hostname'] is defined
+
+
+### CONSUL CLIENTS ###
+- name: "Copy service config for each server into /etc/consul.d/client"
+  template:
+    src: templates/client-config.j2
+    dest: /etc/consul.d/client/config.json
+    owner: consul
+    group: consul
+    mode: 0644
+  when: "item['hostname'] == inventory_hostname"
+  with_items: "{{ consul_client_vars }}"
 

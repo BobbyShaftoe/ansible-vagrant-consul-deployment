@@ -11,13 +11,13 @@ consul_host_vars:
     ip_address: "172.20.20.12"
   - name: "c1"
     hostname: "c1.local"
-    ip_address: "172.20.20.10"
+    ip_address: "172.20.20.20"
   - name: "c2"
     hostname: "c2.local"
-    ip_address: "172.20.20.11"
+    ip_address: "172.20.20.21"
   - name: "c3"
     hostname: "c3.local"
-    ip_address: "172.20.20.12"
+    ip_address: "172.20.20.22"
 
 
 
