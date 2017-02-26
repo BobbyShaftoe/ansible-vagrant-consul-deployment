@@ -1,4 +1,7 @@
 {% set host_ip = hostvars[inventory_hostname]['ansible_eth1']['ipv4']['address'] %}
+# host: {{ inventory_hostname }}
+# eth0: {{ ansible_all_ipv4_addresses[0] }}
+# eth1: {{ ansible_all_ipv4_addresses[1] }}
 
 description "Consul client process"
 

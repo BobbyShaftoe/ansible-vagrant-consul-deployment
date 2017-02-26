@@ -13,14 +13,14 @@
   roles:
     - "vagrant-consul"
 
-#- hosts: "consul-servers"
-#  remote_user: vagrant
-#  become: True
-#  gather_facts: True
-#  roles:
-#    - "consul"
+- hosts: "consul-servers"
+  remote_user: vagrant
+  become: True
+  gather_facts: True
+  roles:
+    - "consul"
 
-- hosts: "consul-hosts"
+- hosts: "consul-clients"
   remote_user: vagrant
   become: True
   gather_facts: True

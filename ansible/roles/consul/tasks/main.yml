@@ -89,6 +89,10 @@
 # ------------------------------------------------------------------------------
 #                       CONSUL CLIENTS
 
+- name: "Show group_vars - ip addresses"
+  debug:  msg="{{ hostvars[item]['ansible_eth1']['ipv4']['address'] }}"
+  with_items: "{{ groups['consul-clients'] }}"
+
 - name: "Copy service config for each server into /etc/consul.d/client"
   template:
     src: templates/client/config.json.j2
