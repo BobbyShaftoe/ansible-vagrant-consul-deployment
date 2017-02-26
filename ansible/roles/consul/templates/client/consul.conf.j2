@@ -1,0 +1,15 @@
+{% set host_ip = hostvars[inventory_hostname]['ansible_eth1']['ipv4']['address'] %}
+
+description "Consul client process"
+
+start on (local-filesystems and net-device-up IFACE=eth1)
+stop on runlevel [!12345]
+
+respawn
+
+setuid consul
+setgid consul
+
+exec consul agent -bind={{ host_ip }} -config-dir /etc/consul.d/client
+
+

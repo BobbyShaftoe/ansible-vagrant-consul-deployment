@@ -1,7 +1,6 @@
 #- include_vars:
 #    dir: 'vars'
 
-
 - name: "Create Consul group"
   group:
     name: consul
@@ -31,15 +30,10 @@
     group: consul
     mode: 0755
 
-- name: "Create Consul ui directory"
-  file:
-    path: "{{ ui_dir }}"
-    state: directory
-    owner: consul
-    group: consul
-    mode: 0755
 
-### CONSUL SERVERS ###
+# ------------------------------------------------------------------------------
+#                       CONSUL SERVERS
+
 - name: "Show group_vars - ansible_hostname"
   debug:  msg="{{ item['name'] }} has flag {{ item['bootstrap_flag'] }}"
   with_items: "{{ consul_server_vars }}"
@@ -54,7 +48,7 @@
 
 - name: "Copy service config for each server into /etc/consul.d/server"
   template:
-    src: templates/server-config.j2
+    src: templates/server/config.json.j2
     dest: /etc/consul.d/server/config.json
     owner: consul
     group: consul
@@ -62,14 +56,13 @@
   when: "item['hostname'] == inventory_hostname"
   with_items: "{{ consul_server_vars }}"
 
-
 #- name: "Show comparison between current host and host in consul-master"
 #  debug:  msg="{{ groups['consul-master'][0] }} / {{ item['hostname'] }} / {{ inventory_hostname }}"
 #  with_items: "{{ consul_server_vars }}"
 
 - name: "Copy bootstrap config for initial server /etc/consul.d/bootstrap"
   template:
-    src: templates/bootstrap-config.j2
+    src: templates/bootstrap/config.json.j2
     dest: /etc/consul.d/bootstrap/config.json
     owner: consul
     group: consul
@@ -84,11 +77,21 @@
 # AND ALSO REQUIRE ADDITIONAL WHEN STATEMENT #
 #    - item['hostname'] is defined
 
+- name: "Copy upstart file to client host"
+  template:
+    src: templates/server/consul.conf.j2
+    dest: /etc/init/consul.conf
+    owner: consul
+    group: consul
+    mode: 0644
+  when: "'consul-servers' in group_names"
 
-### CONSUL CLIENTS ###
+# ------------------------------------------------------------------------------
+#                       CONSUL CLIENTS
+
 - name: "Copy service config for each server into /etc/consul.d/client"
   template:
-    src: templates/client-config.j2
+    src: templates/client/config.json.j2
     dest: /etc/consul.d/client/config.json
     owner: consul
     group: consul
@@ -96,3 +99,21 @@
   when: "item['hostname'] == inventory_hostname"
   with_items: "{{ consul_client_vars }}"
 
+- name: "Create Consul ui directory on clients"
+  file:
+    path: "{{ ui_dir }}"
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0755
+  when: "'consul-clients' in group_names"
+# ^^^ USE THIS IDIOM ABOVE FOR REFERENCING A HOST IN A PARTICULAR GROUP
+
+- name: "Copy upstart file to client host"
+  template:
+    src: templates/client/consul.conf.j2
+    dest: /etc/init/consul.conf
+    owner: consul
+    group: consul
+    mode: 0644
+  when: "'consul-clients' in group_names"
