@@ -16,6 +16,7 @@ Subsequent changes that added hosts to the Vagrantfile were actioned with this c
 vagrant reload --provision
 ```
 
+
 # Vagrant Consul Demo
 
 This demo provides a very simple `Vagrantfile` that creates two Consul
