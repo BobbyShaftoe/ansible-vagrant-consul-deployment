@@ -1,0 +1,13 @@
+---
+
+htpasswd_password: "{{ lookup('env','HTPASSWD') | default('')}}"
+
+htpasswd_dir: '/auth'
+docker_compose_dir: '/compose'
+
+registry_path: '/var/lib/registry'
+registry_path_local: '/var/lib/docker-registry'
+
+docker_compose_service_path: '/usr/lib/systemd/system'
+
+

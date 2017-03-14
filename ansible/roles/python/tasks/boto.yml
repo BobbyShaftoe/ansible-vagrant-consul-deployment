@@ -1,0 +1,2 @@
+- name: Install Boto python package
+  pip: name=boto

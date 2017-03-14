@@ -1,0 +1,11 @@
+[Unit]
+Description=Run docker-compose service
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c \"/usr/local/bin/docker-compose -f {{ registry_path_local }}{{ docker_compose_dir }}/docker-compose.yml up -d\"
+User=docker
+
+[Install]
+WantedBy=multi-user.target

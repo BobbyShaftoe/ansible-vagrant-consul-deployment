@@ -1,0 +1,6 @@
+
+docker_compose_version: '1.11.2'
+docker_compose_url: 'https://github.com/docker/compose/releases/download'
+docker_compose_path: '/usr/local/bin/docker-compose'
+docker_compose_symlink: '/usr/bin/docker-compose'
+
