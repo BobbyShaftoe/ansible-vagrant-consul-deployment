@@ -4,11 +4,18 @@
 
 
 ### How to build
-Run packer from the command line, referencing examples below for more detail
+Run packer from the command line, referencing examples below for more detail;
+the two key requirements however, are the vars:
+* HTPASSWD
+* ssh_username
+
+The actual command currently being used to build the machine image is:
+
+```packer build -var 'HTPASSWD=**************'  -var 'ssh_username=centos' docker-registry-server.json```
 
 
-##### Environment variables
-###### Pass values if ENV not setup or to override.
+
+##### Pass in values if Environment variables not setup or to override.
 
 * ```aws_access_key```
 * ```aws_secret_key```
