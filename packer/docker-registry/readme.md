@@ -1,6 +1,6 @@
 # Packer build configuration for creating a Docker registry service as an AMI
 ### This implements the 'amazon-ebs' builder and 'ansible-local' provisioner
-    Note the included roles in the main ansible project tree that have been included as dependencies of the Ansible provisioner configuration.
+    Note the roles in the main ansible project tree that have been included as dependencies of the Ansible provisioner configuration.
 
 
 ### How to build
