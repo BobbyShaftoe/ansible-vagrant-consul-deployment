@@ -1,7 +1,14 @@
-### How to build
+# Packer build configuration for creating a Docker registry service as an AMI
+### This implements the 'amazon-ebs' builder and 'ansible-local' provisioner
+    Note the included roles in the main ansible project tree that have been included as dependencies of the Ansible provisioner configuration.
 
-#### Environment variables
-##### Pass values if ENV not setup or to override.
+
+### How to build
+Run packer from the command line, referencing examples below for more detail
+
+
+##### Environment variables
+###### Pass values if ENV not setup or to override.
 
 * ```aws_access_key```
 * ```aws_secret_key```
@@ -40,8 +47,8 @@
 * Amazon Linux: ```ec2-user```
 
 ##### -var 'ami_name'
- - Append "-packer" to the end of the AMI name
-    * "new-server" =  AMI named "new-server-packer"
+ - Specify custom AMI name at build time
+    * "docker-registry" =  AMI named "docker-registry"
 
 
 Example:

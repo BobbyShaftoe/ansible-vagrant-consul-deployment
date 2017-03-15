@@ -10,4 +10,4 @@
 - include: docker-py.yml # Requires python-pip
 - include: boto.yml # Requires python-pip
 - include: passlib.yml #Requires python-pip
-
+- include: bcrypt.yml #Requires python-pip

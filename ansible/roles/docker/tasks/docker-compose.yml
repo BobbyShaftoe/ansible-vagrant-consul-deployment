@@ -15,7 +15,7 @@
   get_url:
     url : "{{ docker_compose_url }}/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}"
     dest: "{{ docker_compose_path }}"
-    mode: 'u+x,g+x'
+    mode: 'u+x,g+x,o+x'
 
 - name: "Create symlink to docker-compose binary"
   file:
