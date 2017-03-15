@@ -1,0 +1,20 @@
+---
+
+- name: "Create correct rsyslog.conf entries for HAProxy logging"
+  lineinfile:
+    dest: '/etc/rsyslog.conf'
+    regexp: "^[# ]?{{ item }}"
+    line: "{{ item }}"
+  with_items:
+    - '$ModLoad imudp'
+    - '$UDPServerRun 514'
+    - '$UDPServerAddress 127.0.0.1'
+
+- name: "Copy logging configuration file etc/rsyslog.d/haproxy.conf to host"
+  copy:
+    src: etc/rsyslog.d/haproxy.conf
+    dest: /etc/rsyslog.d/haproxy.conf
+    owner: root
+    group: root
+    mode: 0644
+
