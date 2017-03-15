@@ -1,8 +1,9 @@
----
 
-# talk to all hosts just so we can learn about them
-- hosts: "consul-servers"
+- hosts: "consul-hosts"
+  remote_user: vagrant
+  become: True
   gather_facts: True
   roles:
-    - consul
+    - "consul"
+
 

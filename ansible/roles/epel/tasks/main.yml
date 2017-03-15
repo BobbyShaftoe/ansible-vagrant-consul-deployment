@@ -1,0 +1,9 @@
+- name: "Add epel yum repo"
+  yum:
+    name: "epel-release"
+    state: present
+
+- name: "Update yum"
+  yum:
+    name: "*"
+    update_cache: yes

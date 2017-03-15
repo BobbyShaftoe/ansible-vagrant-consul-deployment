@@ -1,0 +1,23 @@
+
+consul_host_vars:
+  - name: "n1"
+    hostname: "n1.local"
+    ip_address: "172.20.20.10"
+  - name: "n2"
+    hostname: "n2.local"
+    ip_address: "172.20.20.11"
+  - name: "n3"
+    hostname: "n3.local"
+    ip_address: "172.20.20.12"
+  - name: "c1"
+    hostname: "c1.local"
+    ip_address: "172.20.20.20"
+  - name: "c2"
+    hostname: "c2.local"
+    ip_address: "172.20.20.21"
+  - name: "c3"
+    hostname: "c3.local"
+    ip_address: "172.20.20.22"
+
+
+

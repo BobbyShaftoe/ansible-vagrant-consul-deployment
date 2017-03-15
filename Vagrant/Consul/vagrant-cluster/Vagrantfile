@@ -21,10 +21,10 @@ if [ ! -e "`which consul`" ]; then
   sudo chmod a+w /etc/consul.d
 fi
 
-[ ! -d "~/.ssh" ] && mkdir ~/.ssh
-[ ! -e "~/.ssh/authorized_keys" ] && touch ~/.ssh/authorized_keys
-sed -i 's/^.*ansible.master$//g' ~/.ssh/authorized_keys
-curl https://s3.amazonaws.com/ansible-keystore/ansible_id_rsa.pub >> ~/.ssh/authorized_keys
+#[ ! -d "~/.ssh" ] && mkdir ~/.ssh
+#[ ! -e "~/.ssh/authorized_keys" ] && touch ~/.ssh/authorized_keys
+#sed -i 's/^.*ansible.master$//g' ~/.ssh/authorized_keys
+#curl https://s3.amazonaws.com/ansible-keystore/ansible_id_rsa.pub >> ~/.ssh/authorized_keys
 
 SCRIPT
 
@@ -38,13 +38,37 @@ DEMO_BOX_NAME = ENV['DEMO_BOX_NAME'] || "debian/jessie64"
 # NB: Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = DEMO_BOX_NAME
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 256
+  end
+
+
+# --------------------- SETUP SSH -----------------------------#
+  # ssh settings
+  config.ssh.insert_key = false
+  config.ssh.private_key_path = ["~/.ssh/ansible_id_rsa", "~/.vagrant.d/insecure_private_key"]
+  config.vm.provision "file", source: "~/.ssh/ansible_id_rsa.pub", destination: "~/.ssh/authorized_keys"
+  config.vm.provision "shell", inline: <<-EOC
+    sudo sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
+    sudo service ssh restart
+  EOC
+
+# ---------------- DISABLE USB -------------------------------#
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--usb", "on"]
+    vb.customize ["modifyvm", :id, "--usbehci", "off"]
+  end
+# ----------------------------------------------------------- #
 
   config.vm.provision "shell",
                           inline: $script,
                           env: {'CONSUL_DEMO_VERSION' => CONSUL_DEMO_VERSION}
 
+# Servers
   config.vm.define "n1" do |n1|
       n1.vm.hostname = "n1"
       n1.vm.network "private_network", ip: "172.20.20.10"
@@ -58,6 +82,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "n3" do |n3|
       n3.vm.hostname = "n3"
       n3.vm.network "private_network", ip: "172.20.20.12"
+  end
+
+
+# Clients
+  config.vm.define "c1" do |c1|
+      c1.vm.hostname = "c1"
+      c1.vm.network "private_network", ip: "172.20.20.20"
+  end
+
+    config.vm.define "c2" do |c2|
+      c2.vm.hostname = "c2"
+      c2.vm.network "private_network", ip: "172.20.20.21"
+  end
+
+    config.vm.define "c3" do |c3|
+      c3.vm.hostname = "c3"
+      c3.vm.network "private_network", ip: "172.20.20.22"
   end
 
 end

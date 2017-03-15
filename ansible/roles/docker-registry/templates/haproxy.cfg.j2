@@ -1,0 +1,17 @@
+frontend https
+
+# Certificate from letsencrypt containing all subdomains including:
+# what-domain-is-this.com, registry.what-domain-is-this.com, repo.what-domain-is-this.com
+
+bind *:443 ssl crt /etc/letsencrypt/live/registry.what-domain-is-this.com/haproxy.pem
+ #
+ acl host_docker hdr(host) -i registry.what-domain-is-this.com
+ use_backend docker if host_docker
+ #
+
+backend docker
+    mode http
+    option forwardfor
+    http-request set-header X-Forwarded-Port %[dst_port]
+    http-request add-header X-Forwarded-Proto https if { ssl_fc }
+    server docker_registry 127.0.0.1:5000

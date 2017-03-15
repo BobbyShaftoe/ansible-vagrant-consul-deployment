@@ -1,0 +1,17 @@
+# This repo sometimes has issues connecting and checking the gpg
+- name: Add Docker Yum Repository
+  yum_repository:
+    name: Docker
+    description: Docker Repository
+    baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+    repo_gpgcheck: no
+    gpgkey: https://yum.dockerproject.org/gpg
+    enabled: yes
+    gpgcheck: yes
+
+- name: Docker RPM Yum install
+  yum: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "docker-engine"
