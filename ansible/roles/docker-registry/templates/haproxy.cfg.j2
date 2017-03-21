@@ -1,17 +1,43 @@
+
+global
+    log         127.0.0.1 local2
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    maxconn     4000
+    user        haproxy
+    group       haproxy
+    daemon
+    tune.ssl.default-dh-param 2048
+    stats socket /var/lib/haproxy/stats
+defaults
+    mode                    http
+    log                     global
+    option                  httplog
+    option                  dontlognull
+    option http-server-close
+    option forwardfor
+    option                  redispatch
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+# --- main frontend which proxys to the backends ---
 frontend https
-
-# Certificate from letsencrypt containing all subdomains including:
-# what-domain-is-this.com, registry.what-domain-is-this.com, repo.what-domain-is-this.com
-
-bind *:443 ssl crt /etc/letsencrypt/live/registry.what-domain-is-this.com/haproxy.pem
- #
- acl host_docker hdr(host) -i registry.what-domain-is-this.com
- use_backend docker if host_docker
- #
-
+    bind *:443 ssl crt /etc/letsencrypt/live/{{ registry_domain }}/fullchain.pem
+    acl host_docker hdr(host) -i {{ registry_domain }}
+    option accept-invalid-http-request
+    use_backend docker if host_docker
+    default_backend docker
+# --- docker backend which passes off to regular http at localhost:5000 ---
 backend docker
     mode http
     option forwardfor
     http-request set-header X-Forwarded-Port %[dst_port]
     http-request add-header X-Forwarded-Proto https if { ssl_fc }
     server docker_registry 127.0.0.1:5000
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#

@@ -1,0 +1,40 @@
+
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description": "Simple Cloudformation template to create/update A record",
+  "Parameters": {
+      "HostedZoneResource": {
+        "Description": "Root domain",
+        "Type": "String"
+      },
+      "Name": {
+        "Description": "Domain A record",
+        "Type": "String"
+      },
+      "PublicIp": {
+        "Description": "Public IP address",
+        "Type": "String"
+      }
+  },
+
+  "Resources": {
+     "myDNSRecord" : {
+        "Type" : "AWS::Route53::RecordSet",
+        "Properties" : {
+           "HostedZoneId" : { "Ref" : "HostedZoneResource" },
+           "Comment" : "A Record",
+           "Name" : { "Ref" : "Name" },
+           "Type" : "A",
+           "TTL" : "900",
+           "ResourceRecords" : [
+             { "Ref" : "PublicIp" }
+           ]
+        }
+     }
+  },
+
+  "Outputs" : {
+  }
+
+}

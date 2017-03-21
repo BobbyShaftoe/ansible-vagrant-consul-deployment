@@ -1,0 +1,11 @@
+---
+
+- name: Cloudformation
+  hosts: local
+  gather_facts: False
+#  vars_files:
+#    - group_vars/all.yml
+  roles:
+    - cloudformation
+
+

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DOMAIN={{ registry_domain }}
+
+[ ! -z "$1" ] && DOMAIN="$1"
+
+/opt/certbot/certbot-auto certonly --webroot -w $DOMAIN -d {{ webserver_path_local }}
+
+
+

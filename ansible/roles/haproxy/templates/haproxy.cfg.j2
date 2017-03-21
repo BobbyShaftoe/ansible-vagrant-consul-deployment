@@ -1,0 +1,117 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+# {{ ansible_managed }}
+
+global
+{% if haproxy_global.log is defined %}
+  {% for log in haproxy_global.log %}
+  log {{ log.address }} {{ log.facility }} {% if log.level is defined %} {{log.level }}{% endif %}{% if log.minlevel is defined %} {{ log.minlevel }}{% endif %}
+  {% if log.format is defined %}
+  log-format {{ log.format }}
+  {% endif %}
+  {% endfor %}
+{% else %}
+  log 127.0.0.1 local0
+  log 127.0.0.1 local1 notice
+{% endif %}
+{% if haproxy_global.uid is defined %}
+  uid {{ haproxy_global.uid }}
+{% elif haproxy_global.user is defined %}
+  user {{ haproxy_global.user }}
+{% else %}
+  user haproxy
+{% endif %}
+{% if haproxy_global.gid is defined %}
+  gid {{ haproxy_global.gid }}
+{% elif haproxy_global.group is defined %}
+  group {{ haproxy_global.group }}
+{% else %}
+  group haproxy
+{% endif %}
+  chroot {{ '/var/lib/haproxy' if haproxy_global.chroot_folder is undefined else haproxy_global.chroot_folder}}
+{% if haproxy_global.daemon is defined and haproxy_global.daemon == true %}
+  daemon
+{% else %}
+  daemon
+{% endif %}
+{% if haproxy_global.nbproc is defined %}
+  nbproc {{ haproxy_global.nbproc }}
+{% endif %}
+{% if haproxy_global.spread_checks is defined %}
+  spread-checks {{ haproxy_global.spread_checks }}
+{% endif %}
+  maxconn {{ '4096' if haproxy_global.maxconn is undefined else haproxy_global.maxconn}}
+  tune.bufsize {{ '384000' if (haproxy_global.tune is undefined or haproxy_global.tune.bufsize is undefined) else haproxy_global.tune.bufsize}}
+  {% if haproxy_ssl | bool %}
+  tune.ssl.default-dh-param {{ haproxy_ssl_default_dh_param }}
+  ssl-default-bind-ciphers {{ haproxy_ssl_bind_cipher_suite }}
+  ssl-default-bind-options {{ haproxy_ssl_bind_options }}
+  {% endif %}
+{% if haproxy_localstats | bool %}
+  stats socket {{ haproxy_localstats_socket }} {{ haproxy_localstats_level }} mode 600
+{% if haproxy_localstats_timeout is defined %}
+  stats timeout {{ haproxy_localstats_timeout }}
+{% endif %}
+{% endif %}
+
+defaults
+{% if haproxy_defaults.mode is defined %}
+  mode {{ haproxy_defaults.mode }}
+{% endif %}
+{% if haproxy_defaults.log is defined %}
+  {% for log in haproxy_defaults.log %}
+  log {{ log.address }} {{ log.facility }} {% if log.level is defined %} {{log.level }}{% endif %}{% if log.minlevel is defined %} {{ log.minlevel }}{% endif %}
+  {% if log.format is defined %}
+  log-format {{ log.format }}
+  {% endif %}
+  {% endfor %}
+{% else %}
+  log global
+{% endif %}
+{% if haproxy_defaults.retries is defined %}
+  retries {{ haproxy_defaults.retries }}
+{% else %}
+  retries 3
+{% endif %}
+{% if haproxy_defaults.timeouts is defined %}
+  {% for timout in haproxy_defaults.timeouts %}
+  timeout {{ timeout.param }} {{ timeout.value }}
+  {% endfor %}
+{% else %}
+  timeout connect 5s
+  timeout client 50s
+  timeout server 50s
+{% endif %}
+{% if haproxy_defaults.maxconn is defined %}
+  maxconn {{ haproxy_defaults.maxconn }}
+{% else %}
+  maxconn 4096
+{% endif %}
+{% if haproxy_defaults.options is defined %}
+{% for option in haproxy_defaults.options %}
+  option {{ option }}
+{% endfor %}
+{% else %}
+  option dontlognull
+  option redispatch
+{% endif %}
+{% if haproxy_defaults.errorfiles is defined %}
+{% for item in haproxy_defaults.errorfiles %}
+  errorfile {{ item.code }} {{ item.file }}
+{% endfor %}
+{% endif %}
+
+{% if haproxy_webstats | bool %}
+listen stats
+  bind {{ '127.0.0.1:1936' if haproxy_webstats_bind is undefined else haproxy_webstats_bind }}
+  mode {{ 'http' if haproxy_webstats_mode is undefined else haproxy_webstats_mode }}
+  stats enable
+  stats uri {{ '/' if haproxy_webstats_uri is undefined else haproxy_webstats_uri }}
+  stats realm {{ 'Haproxy\ Statistics' if haproxy_webstats_realm is undefined else haproxy_webstats_realm }}
+  stats auth {{ haproxy_webstats_auth }}
+  {% if haproxy_webstats_hide_version is defined and haproxy_webstats_hide_version|bool %}
+  stats 'hide-version'
+  {% endif %}
+  {% if haproxy_webstats_refresh is defined %}
+  stats refresh {{ haproxy_webstats_refresh }}
+  {% endif %}
+{% endif %}

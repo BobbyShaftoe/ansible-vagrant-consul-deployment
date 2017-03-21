@@ -54,6 +54,9 @@
         "../../ansible/roles/epel",
         "../../ansible/roles/docker",
         "../../ansible/roles/python",
+        "../../ansible/roles/geerlingguy.git",
+        "../../ansible/roles/geerlingguy.certbot",
+        "../../ansible/roles/haproxy",
         "../../ansible/roles/docker-registry"
       ],
       "inventory_groups": "docker-registry-server"

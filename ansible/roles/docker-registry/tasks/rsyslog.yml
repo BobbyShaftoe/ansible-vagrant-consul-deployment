@@ -18,3 +18,11 @@
     group: root
     mode: 0644
 
+- name:
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: rsyslog
+
+
+

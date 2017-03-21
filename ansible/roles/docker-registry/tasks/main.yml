@@ -1,71 +1,14 @@
 ---
 
-- name: "Create docker group"
-  group:
-    name: docker
-    state: present
+# Docker registry is the actual docker registry run as a container behind HAProxy
+# Haproxy provides SSL termination for the registry, and also proxies for the webserver
+# The webserver is lighthttpd container and required during installation of ssl certificates
+# SSL certs are provided by letsencrypt using certbot
 
-- name: "Create docker user"
-  user:
-    name: docker
-    comment: "Docker user"
-    group: docker
-
-- name: "Create Docker directories"
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0755
-  with_items:
-      - "{{ registry_path_local }}"
-      - "{{ registry_path_local }}{{ htpasswd_dir }}"
-      - "{{ registry_path_local }}{{ docker_compose_dir }}"
-
-- name: "Add registry user to password file"
-  htpasswd:
-    crypt_scheme: bcrypt
-    path: "{{ registry_path_local }}{{ htpasswd_dir }}/htpasswd"
-    name: registry
-    password: "{{ htpasswd_password }}"
-    owner: docker
-    group: docker
-    mode: 0640
-
-- name: "Copy docker-compose.yml (docker registry) to registry host"
-  template:
-    src: templates/docker-compose.yml.j2
-    dest: "{{ registry_path_local }}{{ docker_compose_dir }}/docker-compose.yml"
-    owner: docker
-    group: docker
-    mode: 0644
-
-- name: "Copy docker-compose.service to service directory"
-  template:
-    src: templates/docker-compose.service.j2
-    dest: "{{ docker_compose_service_path }}/docker-compose.service"
-    owner: docker
-    group: docker
-    mode: 0644
-
-- name: "Enable systemd docker service"
-  systemd:
-    name: docker
-    enabled: yes
-    masked: no
-
-- name: "Enable systemd docker-compose service"
-  systemd:
-    name: docker-compose
-    enabled: yes
-    masked: no
-
-- name: "Start Docker service"
-  systemd:
-    state: started
-    name: docker
-
-- name: "Start Docker Compose service"
-  systemd:
-    state: started
-    name: docker-compose
+- include: docker-registry.yml
+- include: webserver.yml
+# - include: letsencrypt.yml # Certbot will now run as a boot script & cron job
+- include: certbot.yml
+- include: haproxy.yml
+- include: rsyslog.yml
 

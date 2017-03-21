@@ -1,0 +1,8 @@
+---
+
+- name: Creating SSL certificates with Certbot/LetsEncrypt
+  shell: >
+     /opt/certbot/certbot-auto certonly
+     --webroot -w "{{ docker_registry_domain }}"
+               -d "{{ docker_registry_domain }}"
+

@@ -1,0 +1,70 @@
+---
+# Copyright 2015, Jean-Philippe Evrard <jean-philippe@evrard.me>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Making sure ssl cert folder exist
+  stat:
+    path: "{{ haproxy_ssl_cert | dirname }}"
+  register: sslcertfolder
+  tags:
+    - haproxy-ssl-certfolder
+
+- name: Creating folder ssl cert folder
+  file:
+    path: "{{ haproxy_ssl_cert | dirname }}"
+    state: directory
+  when: sslcertfolder.stat.exists is undefined
+  tags:
+    - haproxy-ssl-certfolder
+
+- name: Making sure ssl key folder exist
+  stat:
+    path: "{{ haproxy_ssl_key | dirname }}"
+  register: sslkeyfolder
+  tags:
+    - haproxy-ssl-keyfolder
+
+- name: Creating folder ssl key folder
+  file:
+    path: "{{ haproxy_ssl_key | dirname }}"
+    state: directory
+  when: sslkeyfolder.stat.exists is undefined
+  tags:
+    - haproxy-ssl-keyfolder
+
+- name: Making sure ssl pem folder exist
+  stat:
+    path: "{{ haproxy_ssl_pem | dirname }}"
+  register: sslpemfolder
+  tags:
+    - haproxy-ssl-pemfolder
+
+- name: Creating folder ssl pem folder
+  file:
+    path: "{{ haproxy_ssl_pem | dirname }}"
+    state: directory
+  when: sslpemfolder.stat.exists is undefined
+  tags:
+    - haproxy-ssl-pemfolder
+
+- include: haproxy_ssl_self_signed.yml
+  when:
+    - haproxy_ssl | bool
+    - haproxy_user_ssl_cert is undefined or haproxy_user_ssl_key is undefined
+  tags:
+    - haproxy-ssl-self-signed
+
+- include: haproxy_ssl_user_provided.yml
+  tags:
+    - haproxy-ssl-user-provided
