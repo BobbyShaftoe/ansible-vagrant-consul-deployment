@@ -7,8 +7,7 @@
 
 - include: docker-registry.yml
 - include: webserver.yml
-# - include: letsencrypt.yml # Certbot will now run as a boot script & cron job
-- include: certbot.yml
+- include: letsencrypt.yml
 - include: haproxy.yml
 - include: rsyslog.yml
 
