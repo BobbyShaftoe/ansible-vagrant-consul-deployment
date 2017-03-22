@@ -1,11 +1,11 @@
 ---
 
-- name: remove haproxy.cfg file
+- name: "remove haproxy.cfg file"
   file:
     path: /etc/haproxy/haproxy.cfg
     state: absent
 
-- name: Check that the haproxy.cfg doesn't exist
+- name: "Check that the haproxy.cfg doesn't exist"
   stat:
     path: /etc/haproxy/haproxy.cfg
   register: stat_result
@@ -22,3 +22,8 @@
     group: root
     mode: 0644
 
+- name: "Create HAProxy certs directories"
+  file:
+    path: /etc/haproxy/certs/{{ registry_domain }}
+    state: directory
+    mode: 0755

@@ -17,7 +17,7 @@ services:
       restart: always
       image: gists/lighttpd
       ports:
-        - 80:80
+        - 8080:80
       volumes:
         - "{{ webserver_path_local }}:{{ webserver_path }}"
 

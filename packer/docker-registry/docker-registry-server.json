@@ -5,7 +5,7 @@
     "instance_type": "t2.micro",
     "ssh_username": "centos",
     "ami_name": "docker-registry-server",
-    "version": "0.1.5"
+    "version": "0.1.7"
   },
   "builders": [{
     "type": "amazon-ebs",

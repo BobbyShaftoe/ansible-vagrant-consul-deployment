@@ -25,19 +25,29 @@ defaults
     timeout server          1m
     timeout http-keep-alive 10s
     timeout check           10s
+
 # --- main frontend which proxys to the backends ---
 frontend https
-    bind *:443 ssl crt /etc/letsencrypt/live/{{ registry_domain }}/fullchain.pem
+#    bind *:80
+    bind *:443 ssl crt /etc/haproxy/certs/{{ registry_domain }}/bundle.pem
+    option forwardfor
+    http-request set-header X-Forwarded-Proto https if { ssl_fc }
     acl host_docker hdr(host) -i {{ registry_domain }}
-    option accept-invalid-http-request
+#    acl letsencrypt path_beg -i /.well-known/acme-challenge/
+#    use_backend webserver if letsencrypt
     use_backend docker if host_docker
-    default_backend docker
+
+
 # --- docker backend which passes off to regular http at localhost:5000 ---
 backend docker
-    mode http
-    option forwardfor
-    http-request set-header X-Forwarded-Port %[dst_port]
-    http-request add-header X-Forwarded-Proto https if { ssl_fc }
+    redirect scheme https if !{ ssl_fc }
     server docker_registry 127.0.0.1:5000
+
+
+#backend webserver
+#    mode http
+#    option forwardfor
+#    http-request set-header X-Forwarded-Port %[dst_port]
+#    server webserver 127.0.0.1:8080 check
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#

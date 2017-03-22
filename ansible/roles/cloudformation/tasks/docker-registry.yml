@@ -1,0 +1,23 @@
+---
+
+- name: Docker Registry Stack
+  cloudformation:
+    stack_name: "Docker-Registry-Stack"
+    state: "present"
+    region: "us-east-1"
+    disable_rollback: true
+    aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+    aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+    template: roles/cloudformation/files/docker-registry.json
+    template_parameters:
+      HostedZoneResource: "{{ zone_id }}"
+      FQDN: "{{ registry_domain }}"
+      AmiId: "{{ ami_id }}"
+      KeyPair: "{{ key_pair }}"
+      DockerRegistrySecurityGroup: "{{ security_group_id }}"
+      DockerRegistrySubnet: "{{ subnet_id }}"
+    tags:
+      stack: "docker-registry-stack"
+      domain: "{{ registry_domain }}"
+      name: "Docker Registry Server"
+
