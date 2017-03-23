@@ -2,7 +2,7 @@
 region: us-east-1
 owner: 088841113972
 
-ami_id: ami-b3d868a5
+ami_id: ami-1a0aba0c
 instance_type: t2.micro
 key_pair: nb-keypair-01
 
