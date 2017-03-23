@@ -1,11 +1,13 @@
 ---
 
-htpasswd_password: "{{ lookup('env','HTPASSWD') | default('')}}"
+#htpasswd_password: "{{ lookup('env','HTPASSWD') | default('')}}"
+htpasswd_password: "{{ HTPASSWD }}"
 
 htpasswd_dir: '/auth'
 docker_compose_dir: '/compose'
 
-registry_domain: "{{ lookup('env', 'REGISTRY_DOMAIN') | default('registry.aws-halcyon-infra.net') }}"
+#registry_domain: "{{ lookup('env', 'REGISTRY_DOMAIN') | default('registry.aws-halcyon-infra.net') }}"
+registry_domain: "{{ REGISTRY_DOMAIN }}"
 registry_path: '/var/lib/registry'
 registry_path_local: '/var/lib/docker-registry'
 

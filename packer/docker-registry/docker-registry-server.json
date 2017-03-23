@@ -18,7 +18,7 @@
     "ssh_username": "{{user `ssh_username`}}",
     "force_deregister": true,
     "ami_name": "{{user `ami_name`}}--{{user `version`}}",
-    "disable_stop_instance": true,
+    "disable_stop_instance": false,
     "run_tags": {
       "owner": "jshaftoe",
       "packer": "true",
@@ -48,7 +48,7 @@
     },
     {
       "type": "ansible-local",
-      "extra_arguments": [ "--extra-vars \"HTPASSWD={{user `HTPASSWD`}}\"" ],
+      "extra_arguments": [ "--extra-vars", "\"HTPASSWD={{user `HTPASSWD`}} REGISTRY_DOMAIN={{user `REGISTRY_DOMAIN`}}\"" ],
       "playbook_file": "../../ansible/docker-registry-server.yml",
       "role_paths": [
         "../../ansible/roles/epel",

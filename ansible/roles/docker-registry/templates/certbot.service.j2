@@ -5,13 +5,13 @@ After=docker-compose.service
 
 [Service]
 #Type=oneshot
-TimeoutStartSec=0
-TimeoutStopSec=30
+TimeoutStartSec=600
+TimeoutStopSec=1200
 StandardOutput=syslog+console
 WorkingDirectory=/usr/local/sbin
 #ExecStartPre=
-ExecStart=/usr/local/sbin/get-ssl-certificates.sh
-ExecStop=killall -HUP get-ssl-certificates.sh
+ExecStart=/usr/local/sbin/check_dns.sh
+ExecStop=killall -TERM check_dns.sh
 User=root
 NotifyAccess=all
 

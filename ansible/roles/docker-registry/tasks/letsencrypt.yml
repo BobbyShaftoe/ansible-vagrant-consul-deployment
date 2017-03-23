@@ -17,6 +17,22 @@
     group: root
     mode: 0755
 
+- name: "Install check_dns.sh certbot helper script to registry host"
+  template:
+    src: templates/check_dns.sh.j2
+    dest: /usr/local/sbin/check_dns.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Copy Python resolver script tool to registry host"
+  copy:
+    src: usr/local/sbin/resolver.py
+    dest: /usr/local/sbin/resolver.py
+    owner: root
+    group: root
+    mode: 0755
+
 - name: "Copy certbot.service to service directory"
   template:
     src: templates/certbot.service.j2
@@ -27,7 +43,7 @@
 
 - name: "Enable systemd certbot service"
   systemd:
-    name: docker-compose
+    name: certbot
     enabled: yes
     masked: no
 
