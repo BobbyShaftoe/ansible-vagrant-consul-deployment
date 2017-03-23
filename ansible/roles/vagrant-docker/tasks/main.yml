@@ -1,10 +1,6 @@
 ---
 
-- name: "Install Curl"
-  package:
-    name: curl
-    state: present
+- include: install-docker.yml
+- include: docker-services.yml
 
-- name: "Install Docker"
-  shell: curl -fsSL https://get.docker.com/ | sh
 

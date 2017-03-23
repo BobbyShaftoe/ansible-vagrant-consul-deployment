@@ -1,0 +1,9 @@
+---
+
+- name: "Install Curl"
+  package:
+    name: curl
+    state: present
+
+- name: "Install Docker"
+  shell: curl -fsSL https://get.docker.com/ | sh
