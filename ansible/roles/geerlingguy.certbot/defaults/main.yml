@@ -1,0 +1,14 @@
+---
+# Where to get Certbot.
+certbot_repo: https://github.com/certbot/certbot.git
+certbot_version: master
+certbot_keep_updated: yes
+
+# Where to put Certbot.
+certbot_dir: /opt/certbot
+
+# How to keep Certbot certs up to date.
+certbot_auto_renew: false
+certbot_auto_renew_user: "{{ ansible_user }}"
+certbot_auto_renew_hour: 3
+certbot_auto_renew_minute: 30

@@ -13,3 +13,11 @@ services:
         - "{{ registry_path_local }}:{{ registry_path }}"
         - "{{ registry_path_local }}{{ htpasswd_dir }}:{{ htpasswd_dir }}"
 
+    webserver:
+      restart: always
+      image: gists/lighttpd
+      ports:
+        - 80:80
+      volumes:
+        - "{{ webserver_path_local }}:{{ webserver_path }}"
+

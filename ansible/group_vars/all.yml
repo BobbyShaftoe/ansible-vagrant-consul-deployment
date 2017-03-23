@@ -1,0 +1,4 @@
+
+HostedZoneResource: "aws-halcyon-infra.net"
+Name: "docker-registry.aws-halcyon-infra.net"
+PublicIp: "54.227.173.183"

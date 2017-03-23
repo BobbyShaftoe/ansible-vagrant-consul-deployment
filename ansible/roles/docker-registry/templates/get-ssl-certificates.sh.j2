@@ -1,0 +1,14 @@
+#!/bin/bash
+
+DOMAIN={{ registry_domain }}
+
+[ ! -z "$1" ] && DOMAIN="$1"
+
+/opt/certbot/certbot-auto certonly \
+        -n --agree-tos -m nick@halcyonnetworks.com.au \
+        --webroot -w {{ webserver_path_local }} -d ${DOMAIN}
+
+cd /etc/letsencrypt/archive/${DOMAIN}
+cat cert1.pem chain1.pem privkey1.pem > /etc/haproxy/certs/${DOMAIN}/bundle.pem
+
+

@@ -8,6 +8,10 @@
   roles:
     - epel
     - python
+    - geerlingguy.git
+    - geerlingguy.certbot
+    - haproxy
     - docker
     - docker-registry
+
 

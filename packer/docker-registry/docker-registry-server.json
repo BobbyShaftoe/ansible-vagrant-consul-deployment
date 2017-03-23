@@ -5,7 +5,7 @@
     "instance_type": "t2.micro",
     "ssh_username": "centos",
     "ami_name": "docker-registry-server",
-    "version": "0.1.4"
+    "version": "0.1.7"
   },
   "builders": [{
     "type": "amazon-ebs",
@@ -18,7 +18,7 @@
     "ssh_username": "{{user `ssh_username`}}",
     "force_deregister": true,
     "ami_name": "{{user `ami_name`}}--{{user `version`}}",
-    "disable_stop_instance": true,
+    "disable_stop_instance": false,
     "run_tags": {
       "owner": "jshaftoe",
       "packer": "true",
@@ -48,12 +48,15 @@
     },
     {
       "type": "ansible-local",
-      "extra_arguments": [ "--extra-vars \"HTPASSWD={{user `HTPASSWD`}}\"" ],
+      "extra_arguments": [ "--extra-vars", "\"HTPASSWD={{user `HTPASSWD`}} REGISTRY_DOMAIN={{user `REGISTRY_DOMAIN`}}\"" ],
       "playbook_file": "../../ansible/docker-registry-server.yml",
       "role_paths": [
         "../../ansible/roles/epel",
         "../../ansible/roles/docker",
         "../../ansible/roles/python",
+        "../../ansible/roles/geerlingguy.git",
+        "../../ansible/roles/geerlingguy.certbot",
+        "../../ansible/roles/haproxy",
         "../../ansible/roles/docker-registry"
       ],
       "inventory_groups": "docker-registry-server"

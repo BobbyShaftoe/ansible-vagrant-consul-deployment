@@ -1,0 +1,37 @@
+---
+
+- name: "Create correct rsyslog.conf entries for HAProxy logging"
+  lineinfile:
+    dest: '/etc/rsyslog.conf'
+    regexp: '^[#]* *\$ModLoad imudp'
+    line: '$ModLoad imudp'
+
+- name: "Create correct rsyslog.conf entries for HAProxy logging"
+  lineinfile:
+    dest: '/etc/rsyslog.conf'
+    regexp: '^[#]* *\$UDPServerRun 514'
+    line: '$UDPServerRun 514'
+
+- name: "Create correct rsyslog.conf entries for HAProxy logging"
+  lineinfile:
+    dest: '/etc/rsyslog.conf'
+    insertafter: '\$UDPServerRun 514'
+    line: '$UDPServerAddress 127.0.0.1'
+
+
+- name: "Copy logging configuration file etc/rsyslog.d/haproxy.conf to host"
+  copy:
+    src: etc/rsyslog.d/haproxy.conf
+    dest: /etc/rsyslog.d/haproxy.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name:
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: rsyslog
+
+
+

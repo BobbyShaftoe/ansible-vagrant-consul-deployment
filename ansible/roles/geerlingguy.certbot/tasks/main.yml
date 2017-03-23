@@ -1,0 +1,22 @@
+---
+- name: Clone Certbot into configured directory.
+  git:
+    repo: "{{ certbot_repo }}"
+    dest: "{{ certbot_dir }}"
+    version: "{{ certbot_version }}"
+    update: "{{ certbot_keep_updated }}"
+    force: yes
+
+- name: Ensure certbot-auto is executable.
+  file:
+    path: "{{ certbot_dir }}/certbot-auto"
+    mode: 0755
+
+- name: Add cron job for 'certbot-auto renew' (if configured).
+  cron:
+    name: Certbot automatic renewal.
+    job: "{{ certbot_dir }}/certbot-auto renew --quiet --no-self-upgrade"
+    minute: "{{ certbot_auto_renew_minute }}"
+    hour: "{{ certbot_auto_renew_hour }}"
+    user: "{{ certbot_auto_renew_user }}"
+  when: certbot_auto_renew

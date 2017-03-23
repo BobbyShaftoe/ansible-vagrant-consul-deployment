@@ -1,0 +1,93 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Cloudformation template to create/update Docker Registry stack",
+  "Parameters": {
+    "HostedZoneResource": {
+      "Description": "Root domain",
+      "Type": "String"
+    },
+    "FQDN": {
+      "Description": "Domain A record",
+      "Type": "String"
+    },
+    "AmiId": {
+      "Description": "AMI ID",
+      "Type": "String"
+    },
+    "KeyPair": {
+      "Description": "Key Pair",
+      "Type": "String"
+    },
+    "DockerRegistrySecurityGroup": {
+      "Description": "Security Group",
+      "Type": "String"
+    },
+    "DockerRegistrySubnet": {
+      "Description": "Subnet",
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "Ec2Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "ImageId": {
+          "Ref": "AmiId"
+        },
+        "InstanceType": "t2.micro",
+        "KeyName": {
+          "Ref": "KeyPair"
+        },
+        "NetworkInterfaces": [
+          {
+            "GroupSet": [
+              {
+                "Ref": "DockerRegistrySecurityGroup"
+              }
+            ],
+            "AssociatePublicIpAddress": "true",
+            "DeviceIndex": "0",
+            "DeleteOnTermination": "true",
+            "SubnetId": {
+              "Ref": "DockerRegistrySubnet"
+            }
+          }
+        ]
+      }
+    },
+    "DockerRegistryDNSRecord": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "HostedZoneResource"
+        },
+        "Comment": "A Record",
+        "Name": {
+          "Ref": "FQDN"
+        },
+        "Type": "A",
+        "TTL": "900",
+        "ResourceRecords": [
+          {
+            "Fn::GetAtt": [
+              "Ec2Instance",
+              "PublicIp"
+            ]
+          }
+        ]
+      },
+      "DependsOn": "Ec2Instance"
+    }
+  },
+  "Outputs": {
+    "DockerRegistryPublicIp": {
+      "Description": "Public IP address of the EC2 host",
+      "Value": {
+        "Fn::GetAtt": [
+          "Ec2Instance",
+          "PublicIp"
+        ]
+      }
+    }
+  }
+}

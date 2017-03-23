@@ -1,0 +1,13 @@
+---
+
+# webserver as lighthttpd Docker container
+
+- name: "Create webserver (lighthttpd) directories"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    group: root
+    owner: root
+  with_items:
+      - "{{ webserver_path_local }}"

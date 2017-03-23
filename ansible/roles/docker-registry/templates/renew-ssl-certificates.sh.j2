@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DOMAIN={{ registry_domain }}
+
+/opt/certbot/certbot-auto renew --quiet --no-self-upgrade
+
+cd /etc/letsencrypt/archive/${DOMAIN}
+cat cert1.pem chain1.pem privkey1.pem > /etc/haproxy/certs/${DOMAIN}/bundle.pem
+
+systemctl restart haproxy
+

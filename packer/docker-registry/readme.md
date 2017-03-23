@@ -26,16 +26,16 @@ The actual command currently being used to build the machine image is:
 * ```ami_name```
 * etc
 
-| example |   ```-var  'aws_access_key=xxx'```
+##### Example:
 
     $ packer build \
         -var 'aws_access_key=xxx' \
         -var 'aws_secret_key=xxx' \
         -var 'aws_default_region=xxx' \
         -var 'source_ami=xxx' \
-        -var 'instance_type=xxx' \
-        -var 'ssh_username=xxx' \
-        -var 'ami_name=xxx' \
+        -var 'instance_type=t2.micro' \
+        -var 'ssh_username=centos' \
+        -var 'ami_name=centos7-docker-registry-server' \
         docker-registry-server.json
 
 
@@ -58,11 +58,5 @@ The actual command currently being used to build the machine image is:
     * "docker-registry" =  AMI named "docker-registry"
 
 
-Example:
 
-    $ packer build \
-        -var 'source_ami=ami-xxxxxx' \
-        -var 'instance_type=t2.micro' \
-        -var 'ssh_username=centos' \
-        -var 'ami_name=centos7-docker-registry-server' \
-        docker-registry-server.json
+

@@ -1,14 +1,22 @@
 ---
 
-htpasswd_password: "{{ lookup('env','HTPASSWD') | default('')}}"
+#htpasswd_password: "{{ lookup('env','HTPASSWD') | default('')}}"
+htpasswd_password: "{{ HTPASSWD }}"
 
 htpasswd_dir: '/auth'
 docker_compose_dir: '/compose'
 
+#registry_domain: "{{ lookup('env', 'REGISTRY_DOMAIN') | default('registry.aws-halcyon-infra.net') }}"
+registry_domain: "{{ REGISTRY_DOMAIN }}"
 registry_path: '/var/lib/registry'
 registry_path_local: '/var/lib/docker-registry'
+
+webserver_path_local: '/var/lib/webserver/www'
+webserver_path: '/var/www'
 
 docker_compose_application_path: '/usr/local/bin/docker-compose'
 docker_compose_service_path: '/usr/lib/systemd/system'
 
-
+renew_ssl_certificates_minute: '30'
+renew_ssl_certificates_hour: '3'
+renew_ssl_certificates_user: 'root'

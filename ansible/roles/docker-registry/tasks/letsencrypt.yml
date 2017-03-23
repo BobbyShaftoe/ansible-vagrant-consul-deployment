@@ -1,0 +1,57 @@
+---
+# Install certbot script from template and setup cron job
+
+- name: "Install get-ssl-certificates script to registry host"
+  template:
+    src: templates/get-ssl-certificates.sh.j2
+    dest: /usr/local/sbin/get-ssl-certificates.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Install renew-ssl-certificates script to registry host"
+  template:
+    src: templates/renew-ssl-certificates.sh.j2
+    dest: /usr/local/sbin/renew-ssl-certificates.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Install check_dns.sh certbot helper script to registry host"
+  template:
+    src: templates/check_dns.sh.j2
+    dest: /usr/local/sbin/check_dns.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Copy Python resolver script tool to registry host"
+  copy:
+    src: usr/local/sbin/resolver.py
+    dest: /usr/local/sbin/resolver.py
+    owner: root
+    group: root
+    mode: 0755
+
+- name: "Copy certbot.service to service directory"
+  template:
+    src: templates/certbot.service.j2
+    dest: "{{ docker_compose_service_path }}/certbot.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: "Enable systemd certbot service"
+  systemd:
+    name: certbot
+    enabled: yes
+    masked: no
+
+- name: "Add cron job for renew-ssl-certificates.sh"
+  cron:
+    name: "Certbot automatic renewal"
+    job: "/usr/local/sbin/renew-ssl-certificates.sh"
+    minute: "{{ renew_ssl_certificates_minute }}"
+    hour: "{{ renew_ssl_certificates_hour }}"
+    user: "{{ renew_ssl_certificates_user }}"
+

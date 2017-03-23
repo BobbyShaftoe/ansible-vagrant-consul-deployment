@@ -1,0 +1,158 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True, keep_trailing_newline: True
+{% if item.value.frontends is defined and item.value.frontends | length > 0 %}
+{% for frontend in item.value.frontends %}
+frontend {{frontend.name}}
+  #The binds
+  {% for bind in frontend.binds %}
+  bind {{bind.ip}}{% if bind.port is defined %}:{{ bind.port }}{% endif %}{% if bind.transparent is defined and bind.transparent | bool %} transparent{% endif %}{% if bind.ssl_termination is defined and bind.ssl_termination | bool %} ssl crt {{ bind.ssl_certificate | default (haproxy_ssl_pem) }} ciphers {{ bind.ssl_ciphers | default (haproxy_ssl_bind_cipher_suite) }}{% endif %}
+
+  {% endfor %}
+  #The extra configuration
+  {% if frontend.balance_type is defined %}
+  mode {{ frontend.balance_type }}
+  {% elif frontend.mode is defined %}
+  mode {{ frontend.mode }}
+  {% endif %}
+  {% if frontend.maxconn is defined %}
+  maxconn {{ frontend.maxconn }}
+  {% endif %}
+  {% if frontend.monitor is defined %}
+  {% if frontend.monitor.uri is defined %}
+  monitor-uri {{ frontend.monitor.uri }}
+  {% endif %}
+  {% if frontend.monitor.fail is defined %}
+  {% for condition in frontend.monitor.fail %}
+  monitor fail {{ condition }}
+  {% endfor %}
+  {% endif %}
+  {% endif %}
+  {% if frontend.acls is defined %}
+  {% for acl in frontend.acls %}
+  acl {{ acl.name }} {{ acl.condition }}
+  {% endfor %}
+  {% endif %}
+  {% if frontend.reqadd is defined %}
+  {% for reqadd in frontend.reqadd %}
+  reqadd {{ reqadd }}
+  {% endfor %}
+  {% endif %}
+  {% if frontend.rate_limit_sessions is defined %}
+  rate-limit sessions {{ frontend.rate_limit_sessions }}
+  {% endif %}
+  {% if frontend.block is defined %}
+  {% for block in frontend.block %}
+  block {{ block }}
+  {% endfor %}
+  {% endif %}
+  {% if frontend.options is defined %}
+  {% for option in frontend.options %}
+  option {{ option }}
+  {% endfor %}
+  {% endif %}
+  {% if frontend.redirects is defined %}
+  {% for redirect in frontend.redirects %}
+  redirect {{ redirect }}
+  {% endfor %}
+  {% endif %}
+  {% if frontend.http_requests is defined %}
+  {% for request in frontend.http_requests %}
+  http-request {{ request.action }}{% if request.param is defined %} {{ request.param }}{% endif %}{% if request.condition is defined %} {{ request.condition }}{% endif %}
+  {% endfor %}
+  {% endif %}
+  {% if frontend.tcp_requests is defined %}
+  {% for request in frontend.tcp_requests %}
+  tcp-request {{ request.param }} {{ request.value }}{% if request.condition is defined %} {{ request.condition }}{% endif %}
+  {% endfor %}
+  {% endif %}
+  {% if frontend.x_fowarded_proto is defined and frontend.x_fowarded_proto == 'https' %}
+  reqadd X-Forwarded-Proto:\ https
+  {% elif frontend.x_fowarded_proto is defined and frontend.x_fowarded_proto == 'http' %}
+  reqadd X-Forwarded-Proto:\ http
+  {% endif %}
+  {% if frontend.default_backend is defined %}
+  default_backend {{ frontend.default_backend }}
+  {% endif %}
+  {% if frontend.use_backends is defined %}
+  {% for backend in frontend.use_backends %}
+  use_backend {{ backend.name }} {{ backend.condition }}
+  {% endfor %}
+  {% endif %}
+  {% if frontend.timeout_client is defined %}
+  timeout client {{ frontend.timeout_client }}
+  {% endif %}
+{% endfor %}
+{% endif %}
+
+{% if item.value.backends is defined and item.value.backends | length > 0  %}
+{% for backend in item.value.backends %}
+backend {{ backend.name }}
+  {% if backend.disabled is defined and backend.disabled | bool %}
+  disabled
+  {% endif %}
+  {% if backend.description is defined %}
+  description {{ backend.description }}
+  {% endif %}
+  {% if backend.servers is defined %}
+  {% for server in backend.servers %}
+  server {{ server.name }} {{ server.ip }}{% if server.port is defined %}:{{server.port }}{% endif %} {% if server.maxconn is defined %}maxconn {{server.maxconn }} {% endif %}{% if server.params is defined %}{% for param in server.params %}{{ param }} {% endfor %}{% endif %}
+
+  {% endfor %}
+  {% endif %}
+  {% if backend.backups is defined %}
+  {% for server in backend.backups %}
+  server {{ server.name }} {{ server.ip }}{% if server.port is defined %}:{{server.port }}{% endif %} {% if server.maxconn is defined %}maxconn {{server.maxconn }} {% endif %}{% if server.params is defined %}{% for param in server.params %}{{ param }} {% endfor %}{% endif %} backup
+
+  {% endfor %}
+  {% endif %}
+  {% if backend.balance is defined %}
+  balance {{ backend.balance }}
+  {% endif %}
+  {% if backend.balance_type is defined %}
+  mode {{ backend.balance_type }}
+  {% elif backend.mode is defined %}
+  mode {{ backend.mode }}
+  {% endif %}
+  {% if backend.log is defined %}
+  log {{ backend.log }}
+  {% endif %}
+  {% if backend.retries is defined %}
+  retries {{ backend.retries }}
+  {% endif %}
+  {% if backend.redirects is defined %}
+  {% for redirect in backend.redirects %}
+  redirect {{ redirect }}
+  {% endfor %}
+  {% endif %}
+  {% if backend.contimeout is defined %}
+  contimeout {{ backend.contimeout }}
+  {% endif %}
+  {% if backend.timeout_server is defined %}
+  timeout server {{ backend.timeout_server }}
+  {% endif %}
+  {% if backend.http_send_name_header is defined %}
+  http-send-name-header {{ backend.http_send_name_header }}
+  {% endif %}
+  {% if backend.http_check_expect is defined %}
+  {% for check_expect in backend.http_check_expect %}
+  http-check expect {{ check_expect }}
+  {% endfor %}
+  {% endif %}
+  {% if backend.http_requests is defined %}
+  {% for request in backend.http_requests %}
+  http-request {{ request.action }}{% if request.param is defined %} {{ request.param }}{% endif %}{% if request.condition is defined %} {{ request.condition }}{% endif %}
+  {% endfor %}
+  {% endif %}
+  {% if backend.options is defined %}
+  {% for option in backend.options %}
+  option {{ option }}
+  {% endfor %}
+  {% endif %}
+  {% if backend.stick_table is defined %}
+  stick-table {{ backend.stick_table }}
+  {% endif %}
+  {% if backend.stick_on is defined %}
+  stick on {{ backend.stick_on }}
+  {% endif %}
+
+{% endfor %}
+{% endif %}

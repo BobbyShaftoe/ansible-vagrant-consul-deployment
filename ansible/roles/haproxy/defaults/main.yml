@@ -1,0 +1,74 @@
+---
+# Copyright 2015, Jean-Philippe Evrard <jean-philippe@evrard.me>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+haproxy_bind_on_non_local: False
+haproxy_config_fragments_folder: "/etc/haproxy/conf.d"
+haproxy_cleanup_fragments: False
+
+### if you don't have the luxury to do a skip tags in command line,
+## you may want to override this in order to execute only the tasks
+## you want to run.
+##haproxy_run_steps:
+haproxy_pre_install: True
+haproxy_install: True
+haproxy_post_install: True
+haproxy_config: True
+
+## HAproxy base configuration variables. cf. vars/haproxy_* files.
+haproxy_defaults: {}
+haproxy_global: {}
+## HAproxy backends and frontends
+haproxy_services: {}
+
+## HAproxy webstats
+haproxy_webstats: False
+haproxy_webstats_bind: "127.0.0.1:1936"
+haproxy_webstats_auth: "admin : secret"
+#haproxy_webstats_hide_version: True
+#haproxy_webstats_mode: 'http'
+#haproxy_webstats_uri: '/'
+#haproxy_webstats_realm: 'Haproxy\ Statistics'
+
+## HAproxy stats socket
+haproxy_localstats: True
+haproxy_localstats_socket: '/var/run/haproxy.stat'
+haproxy_localstats_level: 'level admin'
+#haproxy_localstats_timeout: '30s'
+
+## HAproxy ssl handling
+haproxy_ssl: False
+haproxy_ssl_default_dh_param: 4096
+haproxy_ssl_self_signed_regen: no
+haproxy_ssl_cert: /etc/ssl/certs/haproxy.cert
+haproxy_ssl_key: /etc/ssl/private/haproxy.key
+haproxy_ssl_pem: /etc/ssl/private/haproxy.pem
+haproxy_ssl_ca_cert: /etc/ssl/certs/haproxy-ca.pem
+#For openstack-ansible, define this in your group_vars/all:
+#haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN={{ internal_lb_vip_address }}/subjectAltName=IP.1={{ external_lb_vip_address }}"
+haproxy_ssl_self_signed_subject: "/C=BE/ST=Brussels/L=Brussels/O=IT/CN=localhost/subjectAltName=IP.1=127.0.0.1"
+
+## Convenient definitions
+haproxy_default_backend_options_http:
+  - "forwardfor"
+  - "httpchk"
+  - "httplog"
+haproxy_default_backend_options_https:
+  - "ssl-hello-chk"
+haproxy_default_interval: 12000
+haproxy_default_rise: 3
+haproxy_default_fall: 3
+#source: https://cipherli.st/ 2015-04
+haproxy_ssl_bind_cipher_suite: AES128+EECDH:AES128+EDH
+haproxy_ssl_bind_options: no-sslv3 no-tls-tickets force-tlsv12
