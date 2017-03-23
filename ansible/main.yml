@@ -19,6 +19,7 @@
   gather_facts: True
   roles:
     - "consul"
+    - "vagrant-docker"
 
 - hosts: "consul-clients"
   remote_user: vagrant
@@ -26,3 +27,4 @@
   gather_facts: True
   roles:
     - "consul"
+    - "vagrant-docker"
