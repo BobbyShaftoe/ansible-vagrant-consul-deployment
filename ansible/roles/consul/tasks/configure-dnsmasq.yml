@@ -1,0 +1,38 @@
+---
+
+- name: Create Dnsmasq config directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+      - "/var/log/dnsmasq"
+
+- name: "Copy hosts.consul file to /etc/hosts.consul"
+  template:
+    src: templates/dnsmasq/hosts.consul.j2
+    dest: /etc/hosts.consul
+    owner: root
+    group: root
+    mode: 0644
+
+- name: "Copy 10-consul file to /etc/dnsmasq.d"
+  template:
+    src: templates/dnsmasq/10-consul.j2
+    dest: /etc/dnsmasq.d/10-consul
+    owner: root
+    group: root
+    mode: 0644
+
+- name: "Copy dnsmasq file to /etc/default/dnsmasq"
+  template:
+    src: templates/dnsmasq/dnsmasq.j2
+    dest: /etc/default/dnsmasq
+    owner: root
+    group: root
+    mode: 0644
+
+- name: "Restart dnsmasq service"
+  service:
+    name: dnsmasq
+    state: restarted

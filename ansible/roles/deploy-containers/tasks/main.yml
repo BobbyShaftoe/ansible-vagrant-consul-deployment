@@ -1,0 +1,6 @@
+---
+
+- include: docker-login.yml
+- include: docker-compose.yml
+
+

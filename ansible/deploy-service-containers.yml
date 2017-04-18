@@ -1,0 +1,15 @@
+---
+
+- hosts: "frontend-clients"
+  remote_user: vagrant
+  become: True
+  gather_facts: True
+  roles:
+    - "deploy-containers"
+
+- hosts: "db-servers"
+  remote_user: vagrant
+  become: True
+  gather_facts: True
+  roles:
+    - "deploy-containers"

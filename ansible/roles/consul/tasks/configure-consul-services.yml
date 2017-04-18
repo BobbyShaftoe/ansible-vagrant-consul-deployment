@@ -1,0 +1,53 @@
+---
+
+- name: "Copy service config for each server into /etc/consul.d/server"
+  template:
+    src: templates/services/redis.json.j2
+    dest: /etc/consul.d/server/services.json
+    owner: consul
+    group: consul
+    mode: 0644
+  when:
+    - "item['hostname'] == inventory_hostname"
+    - inventory_hostname in groups['consul-hosts']
+  with_items: "{{ consul_server_vars }}"
+
+- name: "Copy service check file for Redis DB to servers"
+  copy:
+    src: "files/services/{{ db_service_check }}"
+    dest: "{{ service_checks_path }}/{{ db_service_check }}"
+    mode: 0755
+  when:
+    - inventory_hostname in groups['consul-hosts']
+    - inventory_hostname in groups['consul-servers']
+
+
+- name: "Copy service config for each server into /etc/consul.d/client"
+  template:
+    src: templates/services/app.json.j2
+    dest: /etc/consul.d/client/services.json
+    owner: consul
+    group: consul
+    mode: 0644
+  when:
+    - "item['hostname'] == inventory_hostname"
+    - inventory_hostname in groups['consul-hosts']
+  with_items: "{{ consul_client_vars }}"
+
+- name: "Copy service check file for Flask App to clients"
+  copy:
+    src: "files/services/{{ app_service_check }}"
+    dest: "{{ service_checks_path }}/{{ app_service_check }}"
+    mode: 0755
+  when:
+    - inventory_hostname in groups['consul-hosts']
+    - inventory_hostname in groups['consul-clients']
+
+
+- service:
+    name: consul
+    state: reloaded
+- service:
+    name: consul
+    state: restarted
+

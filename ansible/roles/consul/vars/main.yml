@@ -2,7 +2,11 @@
 data_center: "local-dc-1"
 data_dir: "/var/consul"
 ui_dir: "/home/consul/dist"
+consul_log_path: "/var/log/consul"
 
+db_service_check: "check_redis.py"
+app_service_check: "check_http.sh"
+service_checks_path: "/usr/local/bin"
 
 consul_server_vars:
   - name: "n1"

@@ -1,0 +1,3 @@
+
+- name: Install Passlib python package
+  pip: name=redis

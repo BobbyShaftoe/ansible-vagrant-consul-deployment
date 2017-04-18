@@ -1,4 +1,19 @@
 
-HostedZoneResource: "aws-halcyon-infra.net"
-Name: "docker-registry.aws-halcyon-infra.net"
-PublicIp: "54.227.173.183"
+consul_domain: "service.consul"
+redis_db_service_name: "redis-db"
+redis_db_port: "6379"
+flask_app_service_name: "flask-app"
+flask_app_port: "80"
+
+registry_domain: "{{ REGISTRY_DOMAIN }}"
+htpasswd_password: "{{ HTPASSWD }}"
+htpasswd_user: registry
+
+# The list of hosts to bring up with Varant
+provision_hosts:
+  - n1
+  - n2
+  - n3
+  - c1
+  - c2
+

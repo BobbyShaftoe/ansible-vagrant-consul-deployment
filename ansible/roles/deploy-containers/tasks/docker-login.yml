@@ -1,0 +1,5 @@
+---
+
+- name: "Login to Docker registry"
+  command: docker login -u "{{ htpasswd_user }}" -p "{{ htpasswd_password }}" "https://{{ registry_domain }}"
+

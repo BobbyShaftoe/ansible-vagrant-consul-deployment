@@ -1,0 +1,11 @@
+---
+
+- set_fact:
+    this_host: "{{ current_host }}"
+
+- name: "Checking if Vagrant machine is alive"
+  debug: msg="Checking if Vagrant machine {{ this_host }} is alive"
+
+- name: "Pinging host"
+  raw: ping -c 1 "{{ this_host }}"
+

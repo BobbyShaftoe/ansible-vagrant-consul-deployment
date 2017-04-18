@@ -1,0 +1,4 @@
+---
+
+- name: Dump all vars
+  action: template src=dumpall.j2 dest=tmp/ansible-{{ inventory_hostname }}.all

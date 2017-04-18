@@ -1,0 +1,30 @@
+---
+
+- name: "Create docker-compose directories"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+      - "{{ working_dir }}"
+      - "{{ working_dir }}/{{ docker_compose_dir }}"
+
+- name: "Copy docker-compose.yml to frontend host"
+  template:
+    src: templates/flask-app/docker-compose.yml.j2
+    dest: "{{ working_dir }}/{{ docker_compose_dir }}/docker-compose.yml"
+    mode: 0644
+  when: inventory_hostname in groups['frontend-clients']
+
+- name: "Copy docker-compose.yml to db server hosts"
+  template:
+    src: templates/redis-db/docker-compose.yml.j2
+    dest: "{{ working_dir }}/{{ docker_compose_dir }}/docker-compose.yml"
+    mode: 0644
+  when: inventory_hostname in groups['db-servers']
+
+- name: "docker-compose up command"
+  command: docker-compose up -d
+  args:
+    chdir: "{{ working_dir }}/{{ docker_compose_dir }}"
+

@@ -1,0 +1,41 @@
+---
+
+- name: "set Consul file version based on architecture"
+  set_fact:
+    consul_file: "{{ item.file }}"
+  when: ansible_machine == item.arch
+  with_items: "{{ consul_arch_var }}"
+
+- name: "Generate Consul package URL"
+  set_fact:
+    consul_download_url: "{{ consul_url_prefix }}{{ consul_file }}"
+
+- name: "Debug arch and consul_file variable"
+  vars:
+    msg: |
+      Arch: {{ ansible_machine }}
+      Consul file version: {{ consul_file }}
+      Consul download URL: {{ consul_download_url }}
+  debug:
+    msg: "{{ msg.split('\n') }}"
+
+- stat:
+    path: "{{ consul_symlink }}"
+  register: symlink
+
+- name: "Download and unzip Consul binary"
+  unarchive:
+    src: "{{ consul_download_url }}"
+    dest: "{{ consul_install_path }}"
+    remote_src: True
+  when: symlink.stat.islnk == False
+
+- name: "Create symlink to Consul binary"
+  file:
+    src: "{{ consul_install_path }}/consul"
+    dest: "{{ consul_symlink }}"
+    owner: root
+    group: root
+    state: link
+    force: true
+  when: symlink.stat.islnk == False

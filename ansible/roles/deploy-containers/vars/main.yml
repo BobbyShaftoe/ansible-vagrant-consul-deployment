@@ -1,0 +1,4 @@
+---
+
+working_dir: /opt/docker
+docker_compose_dir: docker_compose

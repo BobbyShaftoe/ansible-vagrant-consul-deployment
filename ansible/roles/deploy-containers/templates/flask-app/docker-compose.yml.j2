@@ -1,0 +1,15 @@
+version: '2'
+services:
+    app:
+      restart: always
+      image: "{{ registry_domain }}/flask-app:latest"
+      ports:
+        - 80:5000
+      command: "{{ redis_db_service_name }}.{{ consul_domain }}"
+      container_name: flask-app
+      network_mode: "bridge"
+
+
+
+
+

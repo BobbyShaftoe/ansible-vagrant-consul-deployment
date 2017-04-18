@@ -1,0 +1,13 @@
+---
+- name: Add Docker GPG key.
+  rpm_key:
+    key: https://yum.dockerproject.org/gpg
+    state: present
+
+- name: Add Docker repository.
+  template:
+    src: 'docker.repo.j2'
+    dest: '/etc/yum.repos.d/docker.repo'
+    owner: root
+    group: root
+    mode: 0644

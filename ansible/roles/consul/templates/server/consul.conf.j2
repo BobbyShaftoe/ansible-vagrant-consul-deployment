@@ -9,10 +9,15 @@ description "Consul server process"
 start on (local-filesystems and net-device-up IFACE=eth1)
 stop on runlevel [!12345]
 
+post-stop exec sleep 10
+
 respawn
 
 setuid consul
 setgid consul
 
-exec consul agent -bind={{ host_ip }} -config-dir /etc/consul.d/server
+exec consul agent -server -bind={{ host_ip }} -bootstrap-expect 3 -config-dir=/etc/consul.d/server >> /var/log/consul 2>&1
 
+post-start script
+   echo "Consul started"
+end script

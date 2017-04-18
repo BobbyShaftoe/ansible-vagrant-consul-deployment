@@ -1,0 +1,130 @@
+---
+
+- name: "Create Consul group"
+  group:
+    name: consul
+    state: present
+
+- name: "Create Consul user"
+  user:
+    name: consul
+    comment: "Consul user"
+    group: consul
+
+- name: Create Consul config directories
+  file:
+    path: "/etc/consul.d/{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+      - bootstrap
+      - server
+      - client
+
+- name: "Create Consul data directory"
+  file:
+    path: "{{ data_dir }}"
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0755
+
+- name: "Create Consul logfile"
+  copy:
+    content: ""
+    dest: "{{ consul_log_path }}"
+    force: no
+    owner: consul
+    group: consul
+    mode: 0644
+
+
+# ------------------------------------------------------------------------------
+#                       CONSUL SERVERS
+
+- name: "Show group_vars - ansible_hostname"
+  debug:  msg="{{ item['name'] }} has flag {{ item['bootstrap_flag'] }}"
+  with_items: "{{ consul_server_vars }}"
+
+- name: "Show server - ip addresses"
+  debug: >
+    msg="{{ ansible_eth1.ipv4.address
+          | default( ansible_lo.ipv4.address ) }}"
+  ignore_errors: True
+  when:
+    - inventory_hostname in groups['consul-hosts']
+    - inventory_hostname in groups['consul-servers']
+
+
+- name: "Copy Consul config for each server into /etc/consul.d/server"
+  template:
+    src: templates/server/config.json.j2
+    dest: /etc/consul.d/server/config.json
+    owner: consul
+    group: consul
+    mode: 0644
+  when: "item['hostname'] == inventory_hostname"
+  with_items: "{{ consul_server_vars }}"
+
+
+- name: "Copy bootstrap config for initial server /etc/consul.d/bootstrap"
+  template:
+    src: templates/bootstrap/config.json.j2
+    dest: /etc/consul.d/bootstrap/config.json
+    owner: consul
+    group: consul
+    mode: 0644
+  when: "groups['consul-master'][0] == item['hostname'] == inventory_hostname"
+  with_items: "{{ consul_server_vars }}"
+
+
+- name: "Copy upstart file to client host"
+  template:
+    src: templates/server/consul.conf.j2
+    dest: /etc/init/consul.conf
+    owner: consul
+    group: consul
+    mode: 0644
+  when: "'consul-servers' in group_names"
+
+# ------------------------------------------------------------------------------
+#                       CONSUL CLIENTS
+
+- name: "Show client - ip addresses"
+  debug: >
+    msg="{{ ansible_eth1.ipv4.address
+          | default( ansible_lo.ipv4.address ) }}"
+  ignore_errors: True
+  when:
+    - inventory_hostname in groups['consul-hosts']
+    - inventory_hostname in groups['consul-clients']
+
+- name: "Copy Consul config for each server into /etc/consul.d/client"
+  template:
+    src: templates/client/config.json.j2
+    dest: /etc/consul.d/client/config.json
+    owner: consul
+    group: consul
+    mode: 0644
+  when: "item['hostname'] == inventory_hostname"
+  with_items: "{{ consul_client_vars }}"
+
+- name: "Create Consul ui directory on clients"
+  file:
+    path: "{{ ui_dir }}"
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0755
+  when: "'consul-clients' in group_names"
+
+
+- name: "Copy upstart file to client host"
+  template:
+    src: templates/client/consul.conf.j2
+    dest: /etc/init/consul.conf
+    owner: consul
+    group: consul
+    mode: 0644
+  when: "'consul-clients' in group_names"
+

@@ -21,3 +21,8 @@ services:
       volumes:
         - "{{ webserver_path_local }}:{{ webserver_path }}"
 
+
+# Datadog container
+# sudo docker run -d --name dd-agent -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc/:/host/proc/:ro
+#    -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro -e API_KEY=67682e5d1256da4d14a84d2251bc8ab0 -e SD_BACKEND=docker
+#    -e TAGS=docker-registry datadog/docker-dd-agent:latest
