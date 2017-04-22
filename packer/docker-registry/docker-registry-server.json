@@ -17,7 +17,7 @@
     "instance_type": "{{user `instance_type`}}",
     "ssh_username": "{{user `ssh_username`}}",
     "force_deregister": true,
-    "ami_name": "{{user `ami_name`}}--{{user `version`}}",
+    "ami_name": "{{user `REGISTRY_DOMAIN`}}--{{user `ami_name`}}-{{user `version`}}",
     "disable_stop_instance": false,
     "run_tags": {
       "owner": "jshaftoe",
@@ -29,7 +29,8 @@
       "owner": "jshaftoe",
       "application_id": "docker-registry",
       "deployment_origin": "consul-deployment",
-      "version": "{{user `version`}}"
+      "version": "{{user `version`}}",
+      "name": "{{user `REGISTRY_DOMAIN`}}"
     },
     "ssh_pty": true
   }],
