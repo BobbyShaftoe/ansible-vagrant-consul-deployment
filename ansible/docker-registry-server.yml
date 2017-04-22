@@ -7,7 +7,11 @@
   gather_facts: True
   roles:
     - epel
-    - python
+    - { role: "python", python_package: "pip", package_manager: "yum" }
+    - { role: "python", python_package: "bcrypt", package_manager: "yum" }
+    - { role: "python", python_package: "docker-py", package_manager: "yum" }
+    - { role: "python", python_package: "passlib", package_manager: "yum" }
+    - { role: "python", python_package: "boto", package_manager: "yum" }
     - geerlingguy.git
     - geerlingguy.certbot
     - haproxy

@@ -30,9 +30,20 @@
   apt:
     name: "{{ item }}"
     state: present
-  when: install_method == 'apt'
+  when:
+    - install_method == 'apt'
   with_items:
     - python-pip
+
+- name: "Install Python packages - yum"
+  yum:
+    name: "{{ item }}"
+    state: present
+  when:
+    - install_method == 'yum'
+  with_items:
+    - python-pip
+
 
 - include: docker-py.yml
   when: install_package == 'docker-py'
