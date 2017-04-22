@@ -22,15 +22,23 @@
       - "{{ registry_path_local }}{{ docker_compose_dir }}"
 
 
+#- name: "Add registry user to password file"
+#  htpasswd:
+#    crypt_scheme: bcrypt
+#    path: "{{ registry_path_local }}{{ htpasswd_dir }}/htpasswd"
+#    name: registry
+#    password: "{{ htpasswd_password }}"
+#    owner: docker
+#    group: docker
+#    mode: 0640
+
+- name: "Install httpd-tools"
+  package:
+    name: httpd-tools
+    state: latest
+
 - name: "Add registry user to password file"
-  htpasswd:
-    crypt_scheme: bcrypt
-    path: "{{ registry_path_local }}{{ htpasswd_dir }}/htpasswd"
-    name: registry
-    password: "{{ htpasswd_password }}"
-    owner: docker
-    group: docker
-    mode: 0640
+  shell: htpasswd -Bbc "{{ registry_path_local }}{{ htpasswd_dir }}/htpasswd" registry3 somepass
 
 - name: "Copy docker-compose.yml (docker registry) to registry host"
   template:
