@@ -19,9 +19,10 @@ resource "aws_instance" "ec2" {
     delete_on_termination = "${var.ebs_root_delete_on_termination}"
   }
   tags {
-    Name          = "${var.name}-${var.environment}-${format("%02d", count.index+1)}"
+    Name          = "${var.name} ${var.environment} ${format("%02d", count.index+1)}"
     environment   = "${var.environment}"
     server_role   = "${var.server_role}"
+    domain_name   = "${var.domain_name}"
   }
   user_data = "${var.user_data}"
 }

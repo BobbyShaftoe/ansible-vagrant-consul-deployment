@@ -4,6 +4,10 @@ variable "name" {
   default = "default"
 }
 
+variable "domain_name" {
+  description = "Domain A record name"
+}
+
 variable "environment" {
   description = "Name of environment type this instance is in"
   default = "default environment"

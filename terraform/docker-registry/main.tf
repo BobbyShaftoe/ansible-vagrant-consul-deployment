@@ -14,6 +14,7 @@ module "ec2" {
 	security_group_id = "${var.security_group_id}"
 	subnet_id = "${var.subnet_id}"
 	instance_type = "t2.micro"
+	domain_name = "{var.domain_name}"
 	user_data = "#!/bin/bash\necho done"
 }
 

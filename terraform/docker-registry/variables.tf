@@ -16,15 +16,15 @@ variable instance_name {
 }
 
 variable environment {
-  default = "testing"
+  default = "Test"
 }
 
 variable role {
-  default = "docker-registry"
+  default = "Docker Registry"
 }
 
 variable ami_id {
-  default = "ami-1a0aba0c"
+  default = "ami-f6e27ee0"
 }
 
 variable key_name {
