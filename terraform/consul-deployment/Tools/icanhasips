@@ -1,0 +1,5 @@
+curl icanhazip.com
+curl -s 'http://checkip.dyndns.org' | sed 's/.*Current IP Address: \([0-9\.]*\).*/\1/g'
+host -t a dartsclink.com | sed 's/.*has address //'
+curl curlmyip.com
+curl ifconfig.me # this has a lot of different alternatives too, such as ifconfig.me/host
