@@ -1,0 +1,41 @@
+
+    
+- name: "Create Docker directories"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+      - "{{ docker_lib_path_local }}"
+      - "{{ docker_lib_path_local }}{{ docker_compose_dir }}"
+
+    
+- name: "Copy docker-compose.service to service directory"
+  template:
+    src: templates/docker-compose.service.j2
+    dest: "{{ systemd_service_path }}/docker-compose.service"
+    owner: docker
+    group: docker
+    mode: 0644
+
+#- name: "Enable systemd docker service"
+#  systemd:
+#    name: docker
+#    enabled: yes
+#    masked: no
+
+- name: "Enable systemd docker-compose service"
+  systemd:
+    name: docker-compose
+    enabled: yes
+    masked: no
+
+#- name: "Start Docker service"
+#  systemd:
+#    state: started
+#    name: docker
+
+- name: "Start Docker Compose service"
+  systemd:
+    state: started
+    name: docker-compose    
