@@ -1,7 +1,9 @@
 [Unit]
 Description=docker-compose service
+{% if ansible_os_family == "RedHat" %}
 After=docker.service
 BindsTo=docker.service
+{% endif %}
 
 [Service]
 TimeoutStartSec=0

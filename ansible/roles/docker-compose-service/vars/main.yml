@@ -6,6 +6,11 @@ docker_lib_path: '/var/lib/docker-lib'
 docker_lib_path_local: '/var/lib/docker-local-lib'
 
 docker_compose_application_path: '/usr/local/bin/docker-compose'
-systemd_service_path: '/usr/lib/systemd/system'
+
+docker_compose_template_dir: "{{  template_dir }}"
+
+systemd_service_paths:
+    - { distribution: "Debian", path: "/etc/systemd/system" }
+    - { distribution: "RedHat", path: "/etc/systemd/system" }
 
 

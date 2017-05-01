@@ -1,5 +1,20 @@
+- name: "Remove trailing ansible directory from playbook_dir path"
+  set_fact: new_path="{{ playbook_dir | regex_replace('/ansible$', '') }}"
 
-    
+- name: "Append directory path containing docker_composefile"
+  set_fact: docker_compose_template_path="{{ new_path }}/{{docker_compose_template_dir}}"
+  when: docker_compose_template_path is undefined
+
+- name: "Output of new path"
+  debug: msg="{{ docker_compose_template_path }}"
+
+- name: "Set service path based on OS distribution"
+  set_fact:
+    systemd_service_path: "{{ item.path }}"
+  when: ansible_os_family == item.distribution
+  with_items: "{{ systemd_service_paths }}"
+
+
 - name: "Create Docker directories"
   file:
     path: "{{ item }}"
@@ -9,7 +24,30 @@
       - "{{ docker_lib_path_local }}"
       - "{{ docker_lib_path_local }}{{ docker_compose_dir }}"
 
-    
+- name: "Copy docker-compose.yml"
+  template:
+    src: "{{ docker_compose_template_path }}/docker-compose.yml.j2"
+    dest: "{{ docker_lib_path_local }}{{ docker_compose_dir }}/docker-compose.yml"
+    owner: docker
+    group: docker
+    mode: 0644
+      
+- name: "Copy every other file over that isn't docker-compose.yml"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ docker_lib_path_local }}{{ docker_compose_dir }}"
+    owner: docker
+    group: docker
+    mode: 0644
+  when: item != 'docker-compose.yml'
+  with_fileglob:
+    - "{{ docker_compose_template_path }}/*"
+
+- name: "Ensure Systemd is installed"
+  package:
+    name: systemd
+    state: latest
+
 - name: "Copy docker-compose.service to service directory"
   template:
     src: templates/docker-compose.service.j2
@@ -35,7 +73,7 @@
 #    state: started
 #    name: docker
 
-- name: "Start Docker Compose service"
-  systemd:
-    state: started
-    name: docker-compose    
+#- name: "Start Docker Compose service"
+#  systemd:
+#    state: started
+#    name: docker-compose
