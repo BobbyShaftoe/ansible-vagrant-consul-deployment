@@ -1,2 +1,3 @@
 credentials:1.18
+javadoc v1.0
 maven-plugin:2.7.1
