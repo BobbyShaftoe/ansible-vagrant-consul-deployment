@@ -11,8 +11,6 @@
   roles:
     - epel
     - { role: "docker", docker_install_compose: True }
-    - { role: "docker-compose-service",
-        docker_compose_template_path: "/tmp/jenkins-docker-aws",
-        template_dir: "" }
+    - { role: "docker-compose-service", docker_compose_template_path: "/tmp/jenkins-docker-aws", template_dir: "" }
 
 
