@@ -1,0 +1,67 @@
+{
+  "variables": {
+    "aws_default_region": "us-east-1",
+    "source_ami": "ami-6d1c2007",
+    "instance_type": "t2.micro",
+    "ssh_username": "centos",
+    "ami_name": "dockerised-jenkins-server",
+    "version": "0.1.1"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "{{user `aws_default_region`}}",
+    "ami_regions": ["us-east-1"],
+    "source_ami": "{{user `source_ami`}}",
+    "instance_type": "{{user `instance_type`}}",
+    "ssh_username": "{{user `ssh_username`}}",
+    "force_deregister": true,
+    "ami_name": "{{user `ami_name`}}-{{user `version`}}",
+    "disable_stop_instance": false,
+    "run_tags": {
+      "owner": "jshaftoe",
+      "packer": "true",
+      "application_id": "dockerised-jenkins",
+      "deployment_origin": "consul-deployment"
+    },
+    "tags": {
+      "owner": "jshaftoe",
+      "application_id": "dockerised-jenkins",
+      "deployment_origin": "consul-deployment",
+      "version": "{{user `version`}}",
+      "Name": "{{user `ami_name`}}-{{user `version`}}"
+    },
+    "ssh_pty": true
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "echo \"Host 127.0.0.1\n StrictHostKeyChecking no\" >> ~/.ssh/config",
+        "cat ~/.ssh/config",
+        "sudo yum -y install gcc libffi-devel python-devel openssl-devel",
+        "cd /tmp && curl 'https://bootstrap.pypa.io/get-pip.py' -o 'get-pip.py'",
+        "sudo python /tmp/get-pip.py",
+        "sudo pip install ansible"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "../../templates/docker-compose/jenkins-docker-aws",
+      "destination": "/tmp"
+    },
+    {
+      "type": "ansible-local",
+      "extra_arguments": [ "--extra-vars", "\"HTPASSWD={{user `HTPASSWD`}} REGISTRY_DOMAIN={{user `REGISTRY_DOMAIN`}}\"" ],
+      "playbook_file": "../../ansible/jenkins-in-docker-on-aws.yml",
+      "role_paths": [
+        "../../ansible/roles/epel",
+        "../../ansible/roles/docker",
+        "../../ansible/roles/docker-compose-service"
+      ],
+      "inventory_groups": "ansible/jenkins-in-docker-on-aws"
+    }
+  ]
+}

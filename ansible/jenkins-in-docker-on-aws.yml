@@ -1,0 +1,18 @@
+---
+
+# Typical: set "template_dir" and don't set "docker_compose_template_path" at all
+# Packer: set "template_dir" to "", and "docker_compose_template_path" to the directory on the remote host
+
+- name: Install Epel-Release, Docker Engine, Docker Compose Systemd & service component files
+  hosts: all
+  remote_user: centos
+  become: True
+  gather_facts: True
+  roles:
+    - epel
+    - { role: "docker", docker_install_compose: True }
+    - { role: "docker-compose-service",
+        docker_compose_template_path: "/tmp/jenkins-docker-aws",
+        template_dir: "" }
+
+

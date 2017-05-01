@@ -1,0 +1,21 @@
+version: '2'
+services:
+    jenkins:
+      build:
+        context: .
+      restart: always
+      ports:
+        - 8080:8080
+        - 50000:50000
+      environment:
+        REGISTRY_AUTH: htpasswd
+      volumes:
+        - "data-jenkins:/var/jenkins_home"
+
+volumes:
+  data-jenkins:
+    driver: "local"
+
+
+
+
