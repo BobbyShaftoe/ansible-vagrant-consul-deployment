@@ -1,0 +1,5 @@
+# The following command will retrieve a list of all plugins
+
+curl -u user:pass  "http://localhost:8080/pluginManager/api/xml?depth=1&xpath=/*/*/shortName|/*/*/version&wrapper=plugins" \
+|sed -e 's#</[a-zA-Z0-9_-]*>##g' -e 's#<[a-zA-Z0-9_-/]*>#\n#g' -e 's#\([a-zA-Z_-]\)\n\([0-9]\)#\1 \2#g' |sort
+
