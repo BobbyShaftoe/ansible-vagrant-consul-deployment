@@ -1,13 +1,53 @@
-- name: "Install Python packages"
-  yum:
+#- name: "Install Python packages - yum"
+#  yum:
+#    name: "{{ item }}"
+#    state: present
+#  with_items:
+#  - python
+#  - python-setuptools
+#  - python-pip
+#  when: install_method == 'yum'
+
+#- name: "Install Python packages - apt"
+#  apt:
+#    name: "{{ item }}"
+#    state: present
+#  with_items:
+#  - python
+#  - python-setuptools
+
+- set_fact:
+    install_method: "{{ package_manager }}"
+
+- set_fact:
+    install_package: "{{ python_package }}"
+
+- debug: msg="Install method':' {{ install_method }}"
+- debug: msg="Python package':' {{ python_package }}"
+
+
+- name: "Install Python packages - apt"
+  apt:
     name: "{{ item }}"
     state: present
+  when: install_method == 'apt'
   with_items:
-  - python
-  - python-setuptools
-  - python-pip
+    - python-pip
 
-- include: docker-py.yml # Requires python-pip
-- include: boto.yml # Requires python-pip
-- include: passlib.yml #Requires python-pip
-- include: bcrypt.yml #Requires python-pip
+- include: docker-py.yml
+  when: install_package == 'docker-py'
+
+- include: boto.yml
+  when: install_package == 'boto'
+
+- include: passlib.yml
+  when: install_package == 'passlib'
+
+- include: bcrypt.yml
+  when: install_package == 'bcrypt'
+
+- include: redis-py.yml
+  when: install_package == 'redis-py'
+
+
+

@@ -1,43 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$script = <<SCRIPT
-
-echo "Installing dependencies ..."
-sudo apt-get update
-sudo apt-get install -y unzip curl
-
-if [ ! -e "`which consul`" ]; then
-  echo "Fetching Consul version ${CONSUL_DEMO_VERSION} ..."
-  cd /tmp/
-  curl -s https://releases.hashicorp.com/consul/${CONSUL_DEMO_VERSION}/consul_${CONSUL_DEMO_VERSION}_linux_amd64.zip -o consul.zip
-
-  echo "Installing Consul version ${CONSUL_DEMO_VERSION} ..."
-  unzip consul.zip
-  sudo chmod +x consul
-  sudo mv consul /usr/bin/consul
-
-  sudo mkdir /etc/consul.d
-  sudo chmod a+w /etc/consul.d
-fi
-
-#[ ! -d "~/.ssh" ] && mkdir ~/.ssh
-#[ ! -e "~/.ssh/authorized_keys" ] && touch ~/.ssh/authorized_keys
-#sed -i 's/^.*ansible.master$//g' ~/.ssh/authorized_keys
-#curl https://s3.amazonaws.com/ansible-keystore/ansible_id_rsa.pub >> ~/.ssh/authorized_keys
-
-SCRIPT
-
-# Specify a Consul version
-CONSUL_DEMO_VERSION = ENV['CONSUL_DEMO_VERSION'] || "0.7.2"
-
 # Specify a custom Vagrant box for the demo
-DEMO_BOX_NAME = ENV['DEMO_BOX_NAME'] || "debian/jessie64"
+#DEMO_BOX_NAME = ENV['DEMO_BOX_NAME'] || "debian/jessie64"
+DEMO_BOX_NAME = ENV['DEMO_BOX_NAME'] || "custom/trusty64"
 
 # Vagrantfile API/syntax version.
 # NB: Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
-
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = DEMO_BOX_NAME
@@ -45,6 +15,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |v|
     v.memory = 256
   end
+
+
+# RANDOM NUMBER FUNCTION FOR PORTS #
+def random_num(lowest)
+        highest = lowest+19
+	r = Random.new
+	ssh_port = r.rand(lowest...highest)
+   	return ssh_port
+end
+
 
 
 # --------------------- SETUP SSH -----------------------------#
@@ -64,24 +44,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 # ----------------------------------------------------------- #
 
-  config.vm.provision "shell",
-                          inline: $script,
-                          env: {'CONSUL_DEMO_VERSION' => CONSUL_DEMO_VERSION}
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
 
 # Servers
   config.vm.define "n1" do |n1|
       n1.vm.hostname = "n1"
       n1.vm.network "private_network", ip: "172.20.20.10"
+      n1.vm.network "forwarded_port", guest: 22, host: random_num(2020), id: 'ssh', auto_correct: true
   end
 
   config.vm.define "n2" do |n2|
       n2.vm.hostname = "n2"
       n2.vm.network "private_network", ip: "172.20.20.11"
+      n2.vm.network "forwarded_port", guest: 22, host: random_num(2040), id: 'ssh', auto_correct: true
   end
 
   config.vm.define "n3" do |n3|
       n3.vm.hostname = "n3"
       n3.vm.network "private_network", ip: "172.20.20.12"
+      n3.vm.network "forwarded_port", guest: 22, host: random_num(2060), id: 'ssh', auto_correct: true
   end
 
 
@@ -89,16 +71,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "c1" do |c1|
       c1.vm.hostname = "c1"
       c1.vm.network "private_network", ip: "172.20.20.20"
+      c1.vm.network "forwarded_port", guest: 22, host: random_num(2080), id: 'ssh', auto_correct: true
   end
 
     config.vm.define "c2" do |c2|
       c2.vm.hostname = "c2"
       c2.vm.network "private_network", ip: "172.20.20.21"
+      c2.vm.network "forwarded_port", guest: 22, host: random_num(2100), id: 'ssh', auto_correct: true
   end
 
     config.vm.define "c3" do |c3|
       c3.vm.hostname = "c3"
       c3.vm.network "private_network", ip: "172.20.20.22"
+      c3.vm.network "forwarded_port", guest: 22, host: random_num(2120), id: 'ssh', auto_correct: true
   end
 
 end

@@ -1,2 +1,3 @@
-- include: rhel.yml
+
+- include: docker.yml
 - include: docker-compose.yml

@@ -1,0 +1,7 @@
+---
+
+- name: "Install dnsmasq"
+  package:
+    name: dnsmasq
+    state: latest
+

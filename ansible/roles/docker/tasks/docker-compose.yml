@@ -11,11 +11,16 @@
     comment: "Docker user"
     group: docker
 
+- stat:
+    path: "{{ docker_compose_path }}"
+  register: application
+
 - name: "Ensure docker-compose is installed and available"
   get_url:
     url : "{{ docker_compose_url }}/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}"
     dest: "{{ docker_compose_path }}"
     mode: 'u+x,g+x,o+x'
+  when: application.stat.exists == False
 
 - name: "Create symlink to docker-compose binary"
   file:

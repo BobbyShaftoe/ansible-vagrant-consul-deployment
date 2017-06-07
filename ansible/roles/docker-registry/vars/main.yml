@@ -2,6 +2,7 @@
 
 #htpasswd_password: "{{ lookup('env','HTPASSWD') | default('')}}"
 htpasswd_password: "{{ HTPASSWD }}"
+htpasswd_user: registry
 
 htpasswd_dir: '/auth'
 docker_compose_dir: '/compose'

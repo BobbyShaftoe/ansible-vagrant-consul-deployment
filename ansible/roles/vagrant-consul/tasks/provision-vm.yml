@@ -1,0 +1,15 @@
+---
+
+- debug: msg="{{ vm_host }}"
+
+- name: "Provision the VM"
+  shell: vagrant up "{{ vm_host }}"
+  args:
+    chdir: "{{ vagrant_path }}"
+  environment:
+    - DEMO_BOX_NAME: "{{ vagrant_os_image }}"
+    - VAGRANT_LOG: debug
+
+- pause:
+    seconds: 20
+

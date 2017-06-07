@@ -1,0 +1,13 @@
+version: '2'
+services:
+    redis:
+      restart: always
+      image: "{{ registry_domain }}/redis:alpine"
+      ports:
+        - 6379:6379
+      container_name: redis
+      network_mode: "bridge"
+
+
+
+

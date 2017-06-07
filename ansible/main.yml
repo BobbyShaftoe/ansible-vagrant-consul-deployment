@@ -6,23 +6,52 @@
   roles:
     - "os-local"
 
-- hosts: "local"
-  remote_user: jack
+
+
+- hosts: "local-vagrant"
+  remote_user: vagrant
   become: False
-  gather_facts: False
+  gather_facts: True
+  vars:
+    mode: provision_mode
   roles:
     - "vagrant-consul"
 
-- hosts: "consul-servers"
+#- hosts: "local-vagrant"
+#  remote_user: jack
+#  become: False
+#  gather_facts: False
+#  vars:
+#    provision_mode: check
+#  roles:
+#    - "vagrant-consul"
+
+
+
+- hosts: "consul-hosts"
   remote_user: vagrant
   become: True
   gather_facts: True
   roles:
+    - { role: "python", python_package: "redis-py", package_manager: "apt" }
+    - "docker"
     - "consul"
 
-- hosts: "consul-clients"
+
+- hosts: "db-servers"
   remote_user: vagrant
   become: True
   gather_facts: True
   roles:
-    - "consul"
+    - "deploy-service-containers"
+    - "deploy-netdata-monitor"
+
+
+- hosts: "frontend-clients"
+  remote_user: vagrant
+  become: True
+  gather_facts: True
+  roles:
+    - "deploy-service-containers"
+    - "deploy-netdata-monitor"
+

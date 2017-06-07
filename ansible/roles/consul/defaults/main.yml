@@ -1,0 +1,11 @@
+# ...................................... Consul Install Defaults ...................................... #
+consul_version: 0.7.5
+
+consul_url_prefix: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_"
+consul_arch_var:
+  - { arch: "i686", file: "linux_386.zip" }
+  - { arch: "x86_64", file: "linux_amd64.zip" }
+
+consul_install_path: "/usr/local/bin"
+consul_symlink: "/usr/bin/consul"
+

@@ -1,0 +1,17 @@
+
+netdata_path_local: '/var/lib/docker-netdata'
+
+docker_compose_dir: '/compose'
+netdata_cache_dir: '/cache'
+netdata_registry_dir: '/etc'
+netdata_config_dir: '/registry'
+
+netdata_cache_path: '/var/cache/netdata'
+netdata_config_path: '/etc/netdata'
+netdata_registry_path: '/var/lib/netdata/registry'
+
+
+
+
+#      - "{{ netdata_path_local }}{{ netdata_config_dir }}:{{ netdata_config_path }}"
+#      - "{{ netdata_path_local }}{{ netdata_registry_dir }}:{{ netdata_registry_path }}"

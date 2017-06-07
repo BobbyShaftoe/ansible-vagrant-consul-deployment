@@ -1,4 +1,8 @@
 
+- name: "debug provision mode"
+  debug: msg="provision mode is {{ provision_mode }}"
+
+
 - name: "Remove trailing ansible directory from playbook_dir path"
   set_fact: new_path="{{ playbook_dir | regex_replace('/ansible$', '') }}"
 
@@ -9,20 +13,102 @@
   debug: msg="{{ vagrant_path }}"
 
 - name: "Provision the Vagrant Machines"
-  command: vagrant up
-  args:
-    chdir: "{{ vagrant_path }}"
-  environment:
-    DEMO_BOX_NAME: "{{ vagrant_os_image }}"
+  include: provision-vm.yml vm_host="{{ item }}"
+  when: provision_mode == 'init'
+  with_items: "{{ provision_hosts }}"
+
+
+- name: "Wait here for 60 seconds... Allow Vagrant VM to be ready"
+  pause:
+    seconds: 60
+  when: provision_mode == 'init'
 
 - name: "Get status of Vagrant Machines"
   command: vagrant status
   args:
     chdir: "{{ vagrant_path }}"
   register: vagrant_status
+  when: provision_mode == 'init'
 
 - name: "Display status of Vagrant machines"
   debug: msg="{{ vagrant_status }}"
+  when: provision_mode == 'init'
+
+
+
+##### Check and Re-provision any ~* UNREACHABLE *~ hosts #####
+
+- name: "debug provision mode"
+  debug: msg="provision mode is {{ provision_mode }}"
+
+- block:
+    - name: "Check hosts"
+      include: block.yml current_host="{{ item }}"
+      with_items: "{{ provision_hosts }}"
+  when: provision_mode == 'check'
+  rescue:
+    - name: "Run ReProvision for the host {{ this_host }}"
+      command: "vagrant reload --provision {{ this_host }}"
+      args:
+        chdir: "{{ vagrant_path }}"
+
+
+
+
+
+
+
+#
+#handlers:
+#  - name: ReProvision
+#    command: "vagrant reload --provision {{ current_host }}"
+#    args:
+#      chdir: "{{ vagrant_path }}"
+
+
+
+
+
+#
+#- block:
+#    - set_fact:
+#        current_host: "{{ item }}"
+#    - debug: msg="Checking if Vagrant machine {{ current_host }} is alive"
+#    - raw: ping -c 1 "{{ current_host }}"
+#  rescue:
+#    - name: "Flush handlers"
+#      meta: flush_handlers
+#    - name: "Run ReProvision handler for the error"
+#      notify: ReProvision
+#  when: provision_mode == 'check'
+#  with_items: "{{ provision_hosts }}"
+#
+#handlers:
+#  - name: ReProvision
+#    command: "vagrant reload --provision {{ current_host }}"
+#    args:
+#      chdir: "{{ vagrant_path }}"
+
+#- name: "Re-provision the Vagrant Machine with a reload if no ansible hostvars"
+#  command: vagrant reload --provision
+#  args:
+#    chdir: "{{ vagrant_path }}"
+#  when:
+#    - provision_mode == 'check'
+#    - hostvars[ansible_host].ansible_all_ipv4_addresses is not defined
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

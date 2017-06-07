@@ -1,0 +1,17 @@
+{% set host_ip = hostvars[inventory_hostname]['ansible_eth1']['ipv4']['address'] %}
+{
+  "service": {
+    "id": "{{ inventory_hostname }}",
+    "name": "{{ flask_app_service_name }}",
+    "tags": ["flask-app-cluster"],
+    "address": "{{ host_ip }}",
+    "port": {{ flask_app_port }},
+    "enableTagOverride": false,
+    "checks": [
+      {
+        "script": "/usr/local/bin/check_http.sh localhost:80",
+        "interval": "10s"
+      }
+    ]
+  }
+}

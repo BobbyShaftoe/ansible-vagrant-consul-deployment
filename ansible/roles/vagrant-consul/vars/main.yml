@@ -1,3 +1,4 @@
 
 vagrant_dir: "Vagrant/Consul/vagrant-cluster"
-vagrant_os_image: "minimal/trusty64"
+vagrant_os_image: "custom/trusty64"
+

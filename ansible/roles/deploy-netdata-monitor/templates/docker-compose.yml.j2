@@ -1,0 +1,23 @@
+version: '2'
+services:
+  netdata:
+    restart: always
+    image: titpetric/netda
+    cap_add:
+      - SYS_PTRACE
+    volumes:
+      - "/proc:/host/proc:ro"
+      - "/sys:/host/sys:ro"
+      - "{{ netdata_path_local }}{{ netdata_cache_dir }}:{{ netdata_cache_path }}"
+      - "{{ netdata_path_local }}{{ netdata_config_dir }}:{{ netdata_config_path }}"
+      - "{{ netdata_path_local }}{{ netdata_registry_dir }}:{{ netdata_registry_path }}"
+      - "/var/run/docker.sock:/var/run/docker.sock "
+    ports:
+      - "19999:19999"
+    network_mode: "bridge"
+
+
+
+
+
+

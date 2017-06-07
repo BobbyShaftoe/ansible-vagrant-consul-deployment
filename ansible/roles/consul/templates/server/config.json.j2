@@ -6,12 +6,16 @@
 {
     "bootstrap": {{ item['bootstrap_flag'] }},
     "server": true,
+    "skip_leave_on_interrupt": true,
     "datacenter": "{{ data_center }}",
     "data_dir": "{{ data_dir }}",
     "encrypt": "{{ item['encryption_key'] }}",
     "log_level": "INFO",
     "enable_syslog": true,
-    "start_join": [ "{{ all_host_ips }}" ]
+    "retry_join": [ "{{ all_host_ips }}" ]
+    "client_addr": "{{ ansible_eth1.ipv4.address }}",
+    "recursors":[
+      "8.8.8.8"
+    ]
 }
-
 

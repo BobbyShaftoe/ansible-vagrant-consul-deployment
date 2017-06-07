@@ -1,8 +1,19 @@
 
+- hosts: "local"
+  remote_user: jack
+  become: False
+  gather_facts: False
+  vars:
+    provision_mode: init
+  roles:
+    - "vagrant-consul"
+
 
 - hosts: "local"
   remote_user: jack
-  become: True
+  become: False
   gather_facts: False
+  vars:
+    provision_mode: check
   roles:
     - "vagrant-consul"
