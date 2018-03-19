@@ -104,19 +104,6 @@ func_remove_null_cols <- function(df){
 }
 df_tmp <- func_remove_null_cols(df_tmp)
 
-
-#############  WORK WITH VALUES TO FACTORS ############
-tmp <- func_remove_null_cols(filter(es_new_df, !is.na(detail_userIdentity_accessKeyId)))
-
-
-
-
-
-
-
-############ WORK WITH DATA AS TIME SERIES ############
-
-
 ### CONVERT ISO8601 DATE TIME FORMAT
 tmp <- as.POSIXct(gsub("Z$", "", df_tmp$time), "%Y-%m-%dT%H:%M:%S", tz="GMT")
 df_tmp$time <- as.POSIXct(gsub("Z$", "", df_tmp$time), "%Y-%m-%dT%H:%M:%S", tz="UTC")
@@ -124,15 +111,14 @@ df_tmp$time <- as.POSIXct(gsub("Z$", "", df_tmp$time), "%Y-%m-%dT%H:%M:%S", tz="
 # ARRANGE BY  DATE
 df_tmp <- df_tmp %>% arrange(time)
 
-
-
 # GROUP AND SUMMARISE BY FIELDS
 #df_tmp <- df_tmp %>% group_by(time, detail_sourceIPAddress) %>%
 df_tmp <- df_tmp %>% group_by(time, detail_userIdentity_accessKeyId, detail_sourceIPAddress) %>%
     summarise(count = n())
 
 View(df_tmp)
-hist(tmp, breaks = "hours", freq = T, col = "gold")
+
+hist(tmp, breaks = "hours", freq = T, col = "blue")
 
 
 #%>% summarise(mean = mean(as.numeric(as.Date(time))), n = n())
