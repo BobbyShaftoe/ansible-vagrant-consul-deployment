@@ -1,0 +1,108 @@
+[
+  {
+    "Records": [
+      {
+        "eventVersion": "1.05",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "principalId": "AROAJHIGDYT5RBSOLCYAC:CheckAndStopInstances",
+          "arn": "arn:aws:sts::088841113972:assumed-role/Ec2CheckAndStopInstances0.2/CheckAndStopInstances",
+          "accountId": "088841113972",
+          "accessKeyId": "ASIAI2T543JI4MCTNCYQ",
+          "sessionContext": {
+            "attributes": {
+              "mfaAuthenticated": "false",
+              "creationDate": "2018-05-24T20:33:42Z"
+            },
+            "sessionIssuer": {
+              "type": "Role",
+              "principalId": "AROAJHIGDYT5RBSOLCYAC",
+              "arn": "arn:aws:iam::088841113972:role/service-role/Ec2CheckAndStopInstances0.2",
+              "accountId": "088841113972",
+              "userName": "Ec2CheckAndStopInstances0.2"
+            }
+          }
+        },
+        "eventTime": "2018-05-24T23:58:43Z",
+        "eventSource": "ec2.amazonaws.com",
+        "eventName": "DescribeInstances",
+        "awsRegion": "us-east-1",
+        "sourceIPAddress": "34.230.76.24",
+        "userAgent": "Boto3/1.7.14 Python/2.7.12 Linux/4.9.93-41.60.amzn1.x86_64 exec-env/AWS_Lambda_python2.7 Botocore/1.10.14",
+        "requestParameters": {
+          "instancesSet": {},
+          "filterSet": {
+            "items": [
+              {
+                "name": "instance-state-name",
+                "valueSet": {
+                  "items": [
+                    {
+                      "value": "running"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "responseElements": null,
+        "requestID": "325c5336-1f01-4680-884b-b7a5390ebd0b",
+        "eventID": "896b437e-7555-4e10-8119-210615cd563b",
+        "eventType": "AwsApiCall",
+        "recipientAccountId": "088841113972"
+      },
+      {
+        "eventVersion": "1.05",
+        "userIdentity": {
+          "type": "AssumedRole",
+          "principalId": "AROAJHIGDYT5RBSOLCYAC:CheckAndStopInstances",
+          "arn": "arn:aws:sts::088841113972:assumed-role/Ec2CheckAndStopInstances0.2/CheckAndStopInstances",
+          "accountId": "088841113972",
+          "accessKeyId": "ASIAI2T543JI4MCTNCYQ",
+          "sessionContext": {
+            "attributes": {
+              "mfaAuthenticated": "false",
+              "creationDate": "2018-05-24T20:33:42Z"
+            },
+            "sessionIssuer": {
+              "type": "Role",
+              "principalId": "AROAJHIGDYT5RBSOLCYAC",
+              "arn": "arn:aws:iam::088841113972:role/service-role/Ec2CheckAndStopInstances0.2",
+              "accountId": "088841113972",
+              "userName": "Ec2CheckAndStopInstances0.2"
+            }
+          }
+        },
+        "eventTime": "2018-05-24T23:58:42Z",
+        "eventSource": "ec2.amazonaws.com",
+        "eventName": "DescribeInstances",
+        "awsRegion": "us-east-1",
+        "sourceIPAddress": "34.230.76.24",
+        "userAgent": "Boto3/1.7.14 Python/2.7.12 Linux/4.9.93-41.60.amzn1.x86_64 exec-env/AWS_Lambda_python2.7 Botocore/1.10.14",
+        "requestParameters": {
+          "instancesSet": {},
+          "filterSet": {
+            "items": [
+              {
+                "name": "instance-state-name",
+                "valueSet": {
+                  "items": [
+                    {
+                      "value": "stopped"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "responseElements": null,
+        "requestID": "e41c29d0-c040-42ca-a7a5-1758485c331e",
+        "eventID": "6f8f06fd-b088-4ec4-83ea-7111c62ea13a",
+        "eventType": "AwsApiCall",
+        "recipientAccountId": "088841113972"
+      }
+    ]
+  }
+]

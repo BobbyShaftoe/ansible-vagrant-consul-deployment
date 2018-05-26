@@ -1,0 +1,38 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.0",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-west-2",
+      "eventTime": "2014-11-27T21:08:30.487Z",
+      "eventName": "ObjectCreated:Put",
+      "userIdentity": {
+        "principalId": "AWS:AROAIPL4FPN3HGWZ2RHGY"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "54.211.178.99"
+      },
+      "responseElements": {
+        "x-amz-request-id": "F104F805121C9B79",
+        "x-amz-id-2": "Lf8hbNPkrhLAT4sHT7iBYFnIdCJTmxcr1ClX93awYfF530O9AijCgja19rk3MyMF"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "quickCreateConfig",
+        "bucket": {
+          "name": "test-s3-trail-logs",
+
+          "ownerIdentity": {
+            "principalId": "AIDAISJV7OSD22UGLWATK"
+          },
+          "arn": "arn:aws:s3:::test-s3-trail-logs"
+        },
+        "object": {
+         "key": "AWSLogs/088841113972/CloudTrail/us-east-1/2018/05/25/088841113972_CloudTrail_us-east-1_20180525T0000Z_GRsTtcJF0xfFVNGJ.json.gz",
+          "size": 2331,
+          "eTag": "63d801bb561037f59f2cb4d1c03c2392"
+        }
+      }
+    }
+  ]
+}

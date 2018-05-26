@@ -2,6 +2,9 @@
 .AppleDouble
 .LSOverride
 
+# Virtualenv
+.virtualenv
+
 # Cache
 .cache
 
