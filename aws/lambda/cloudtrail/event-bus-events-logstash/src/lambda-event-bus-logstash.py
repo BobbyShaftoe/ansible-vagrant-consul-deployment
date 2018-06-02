@@ -20,13 +20,13 @@ host = "10.20.0.175"
 metadata = {
     "local_metafields": {
         "backend": "python",
-        "generator": "lambda"
-    },
-    "source": "cloudtrail"
+        "generator": "lambda",
+        "source": "cloudtrail"
+    }
 }
 
 # Constants
-raw_port = 10514
+raw_port = 50111
 
 # SSL security
 # while creating the lambda function
@@ -73,11 +73,11 @@ def process_cloudtrail_event(event):
     event_account = event_detail['account']
     event_time = event_detail['time']
     date_time = datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%SZ')
-    date = date_time.strftime('%Y.%m')
+    date = date_time.strftime('%Y.%m.%d')
     es_index = str(es_index_prefix + "-" + str(event_account) + "-" + str(date))
     event['es_index'] = es_index
 
-    logger.info("Sending event: %s to logstash server: %s", event_id, host)
+    logger.info("Indexing Event: %s to %s, on logstash server: %s", event_id, es_index, host)
     return event
 
 
@@ -95,20 +95,6 @@ def send_entry(s, log_entry):
     s.send((str_entry + "\n").encode("UTF-8"))
 
 
-def merge_dicts(a, b, path=None):
-    # if path is None:
-    #     path = []
-    # for key in b:
-    #     if key in a:
-    #         if isinstance(a[key], dict) and isinstance(b[key], dict):
-    #             merge_dicts(a[key], b[key], path + [str(key)])
-    #         elif a[key] == b[key]:
-    #             pass  # same leaf value
-    #         else:
-    #             raise Exception(
-    #                 'Conflict while merging metadatas and the log entry at %s' % '.'.join(path + [str(key)]))
-    #     else:
-    #         a[key] = b[key]
+def merge_dicts(a, b):
     merged = {**a, **b}
-
     return merged
