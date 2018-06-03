@@ -69,7 +69,8 @@ def lambda_handler(event, context):
 def process_cloudtrail_event(event):
     event_detail = event
 
-    event_id = event_detail['id']
+    #event_id = event_detail['id']
+    event_name = event_detail['detail']['eventName']
     event_account = event_detail['account']
     event_time = event_detail['time']
     date_time = datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%SZ')
@@ -77,7 +78,7 @@ def process_cloudtrail_event(event):
     es_index = str(es_index_prefix + "-" + str(event_account) + "-" + str(date))
     event['es_index'] = es_index
 
-    logger.info("Indexing Event: %s to %s, on logstash server: %s", event_id, es_index, host)
+    logger.info("Indexing %s event to %s, on logstash server: %s", event_name, es_index, host)
     return event
 
 
