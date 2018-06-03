@@ -25,10 +25,12 @@ vpcEndpointId
 
 
 # Nested objects
-
-requestParameters
-responseElements
-additionalEventData
+userIdentity            json
+resources               json
+additionalEventData     dict
+requestParameters       dict
+responseElements        dict
+additionalEventData     dict
 
 
 

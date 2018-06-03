@@ -1,0 +1,46 @@
+{
+  "version": "0",
+  "id": "3ea7a41d-65b9-1c2b-a695-83c1a62e2740",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.lambda",
+  "account": "307525349211",
+  "time": "2018-06-03T09:01:09Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.06",
+    "userIdentity": {
+      "type": "AWSService",
+      "invokedBy": "lambda.amazonaws.com"
+    },
+    "eventTime": "2018-06-03T09:01:09Z",
+    "eventSource": "lambda.amazonaws.com",
+    "eventName": "InvokeExecution",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "lambda.amazonaws.com",
+    "userAgent": "lambda.amazonaws.com",
+    "requestParameters": {
+      "functionName": "arn:aws:lambda:us-east-1:307525349211:function:test-hello-world-function",
+      "contentType": ""
+    },
+    "responseElements": null,
+    "additionalEventData": {
+      "functionVersion": "arn:aws:lambda:us-east-1:307525349211:function:test-hello-world-function:$LATEST"
+    },
+    "requestID": "a78ffcc5-670c-11e8-8bc7-c75867b5ba01",
+    "eventID": "c0f88811-62cb-4f5a-bb0e-e4f9d8362801",
+    "readOnly": false,
+    "resources": [
+      {
+        "accountId": "307525349211",
+        "type": "AWS::Lambda::Function",
+        "ARN": "arn:aws:lambda:us-east-1:307525349211:function:test-hello-world-function"
+      }
+    ],
+    "eventType": "AwsApiCall",
+    "managementEvent": false,
+    "recipientAccountId": "307525349211",
+    "sharedEventID": "146800a6-0dd0-463f-babf-7aee225bbaea"
+  },
+  "es_index": "cloudtrail-307525349211-2018.06.03"
+}

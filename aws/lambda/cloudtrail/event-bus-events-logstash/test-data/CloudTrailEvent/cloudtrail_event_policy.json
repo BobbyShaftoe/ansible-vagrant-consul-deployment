@@ -1,0 +1,49 @@
+{
+  "version": "0",
+  "id": "cb160ef2-a32e-dea8-2772-555dceeccecf",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.iam",
+  "account": "307525349211",
+  "time": "2018-06-03T03:50:57Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.02",
+    "userIdentity": {
+      "type": "Root",
+      "principalId": "307525349211",
+      "arn": "arn:aws:iam::307525349211:root",
+      "accountId": "307525349211",
+      "accessKeyId": "ASIAJNPKVCO5FNJ32AHQ",
+      "sessionContext": {
+        "attributes": {
+          "mfaAuthenticated": "true",
+          "creationDate": "2018-06-03T03:24:50Z"
+        }
+      },
+      "invokedBy": "signin.amazonaws.com"
+    },
+    "eventTime": "2018-06-03T03:50:57Z",
+    "eventSource": "iam.amazonaws.com",
+    "eventName": "CreatePolicyVersion",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "219.74.250.6",
+    "userAgent": "signin.amazonaws.com",
+    "requestParameters": {
+      "setAsDefault": true,
+      "policyArn": "arn:aws:iam::307525349211:policy/service-role/AWSLambdaS3ExecutionRole-905ca28e-aaa5-49be-82fc-1c225aba5fa9",
+      "policyDocument": "{\n    \"Version\": \"2012-10-17\",\n    \"Statement\": [\n         {\n         \"Effect\":\"Allow\",\n         \"Action\":[\n            \"s3:ListBucket\"\n         ],\n         \"Resource\":\"arn:aws:s3:::test-lambda-read-bucket\"\n      },\n        {\n            \"Effect\": \"Allow\",\n            \"Action\": [\n                \"s3:GetObject\"\n            ],\n            \"Resource\": \"arn:aws:s3:::*\"\n        }\n    ]\n}"
+    },
+    "responseElements": {
+      "policyVersion": {
+        "isDefaultVersion": true,
+        "createDate": "Jun 3, 2018 3:50:57 AM",
+        "versionId": "v3"
+      }
+    },
+    "requestID": "529c7509-66e1-11e8-96c3-478b8c348f74",
+    "eventID": "be384b94-d752-4907-8091-46484b2b5fe3",
+    "eventType": "AwsApiCall"
+  },
+  "es_index": "cloudtrail-307525349211-2018.06.03"
+}
