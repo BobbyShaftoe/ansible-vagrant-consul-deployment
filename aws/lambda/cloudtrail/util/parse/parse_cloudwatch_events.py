@@ -34,8 +34,8 @@ def flatten_json(y):
 
 json_body = json.loads(json_bytes)
 json_body['resources'] = flatten_json(json_body['resources'])
-json_body_detail = json_body['detail']
 
+json_body_detail = json_body['detail']
 for j in json_body_detail:
     d = json_body_detail[j]
     if isinstance(d, list):
