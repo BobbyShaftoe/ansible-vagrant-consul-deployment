@@ -1,0 +1,30 @@
+
+
+- name: "Copy goss files to host"
+  template:
+    src: "{{ test_name }}.j2"
+    dest: "{{ tmp_dir }}/{{ test_name }}.yml"
+    mode: 0644
+    
+- name: "Run goss test"
+  goss:
+    path: "{{ tmp_dir }}/{{ test_name }}.yml"
+    format: junit
+    output_file: "{{ goss_results_dir }}/{{ test_name }}.xml"
+  ignore_errors: yes
+  register: goss_output
+
+- name: "Retrieve test results"
+  fetch:
+    src: "{{ goss_results_dir }}/{{ test_name }}.xml"
+    dest: "tests/{{ test_name }}.xml"
+    flat: yes
+
+- name: "Manually fail on error"
+  fail:
+    msg: "Goss tests failed"
+  when: goss_output.failed is defined
+
+- name: "Debug goss_output"
+  debug: 
+    msg: "{{ goss_output.stdout_lines }}"

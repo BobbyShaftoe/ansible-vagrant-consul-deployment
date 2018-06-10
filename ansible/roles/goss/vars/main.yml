@@ -1,0 +1,5 @@
+#curl -L https://github.com/aelsabbahy/goss/releases/download/_VERSION_/goss-linux-amd64 -o /usr/local/bin/goss
+#chmod +rx /usr/local/bin/goss  https://github.com/aelsabbahy/goss/releases/download/v0.2.3/goss-linux-amd64
+goss:
+  download: "https://github.com/aelsabbahy/goss/releases/download/v0.2.4/goss-linux-amd64"
+  binary: "/usr/local/bin/goss"

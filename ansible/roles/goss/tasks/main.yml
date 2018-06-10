@@ -1,0 +1,15 @@
+- name: "Download Goss"
+  get_url:
+    url: "{{ goss.download }}"
+    dest: "{{ goss.binary }}"
+    mode: "0755"
+    validate_certs: no # fails on alpine without this
+
+- name: "Create required folders"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{ tmp_dir }}"
+    - "{{ goss_results_dir }}"

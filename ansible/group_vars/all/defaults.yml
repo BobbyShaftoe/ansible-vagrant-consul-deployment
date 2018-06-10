@@ -1,0 +1,6 @@
+
+test_results_dir: "/data/tests"
+goss_results_dir: "{{ test_results_dir }}/goss"
+
+# Variable to allow inclusion of goss-test
+goss_test_role: "{{ playbook_dir }}/roles/goss-test/tasks/main.yml"
