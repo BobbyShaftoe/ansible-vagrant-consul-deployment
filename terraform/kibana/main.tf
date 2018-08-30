@@ -7,34 +7,6 @@ provider "kibana" {
 }
 
 
-//resource "kibana_search" "cloudwatch_ec2" {
-//  name 	        = "Cloudwatch origin - errors"
-//  description     = "Errors occured when source was from EC2"
-//  display_columns = ["_source"]
-//  sort_by_columns = ["@timestamp"]
-//  search = {
-//    index   = "${data.kibana_index.main.id}"
-//    filters = [
-//      {
-//        match = {
-//          field_name = "geo.src"
-//          query      = "CN"
-//          type       = "phrase"
-//        },
-//      },
-//      {
-//        match = {
-//          field_name = "@tags"
-//          query      = "error"
-//          type       = "phrase"
-//        }
-//      }
-//    ]
-//  }
-//}
-
-
-
 resource "kibana_visualization" "cloudwatch_visualization_bbb" {
   name = "Cloudwatch Visualization BBB"
   description = "Cloudwatch EC2 Event Name"
@@ -117,11 +89,6 @@ resource "kibana_visualization" "cloudwatch_visualization_ccc" {
     }
 EOF
 }
-
-
-
-
-
 
 
 
@@ -285,7 +252,37 @@ EOF
 
 
 
+
+//resource "kibana_search" "cloudwatch_ec2" {
+//  name 	        = "Cloudwatch origin - errors"
+//  description     = "Errors occured when source was from EC2"
+//  display_columns = ["_source"]
+//  sort_by_columns = ["@timestamp"]
+//  search = {
+//    index   = "${data.kibana_index.main.id}"
+//    filters = [
+//      {
+//        match = {
+//          field_name = "geo.src"
+//          query      = "CN"
+//          type       = "phrase"
+//        },
+//      },
+//      {
+//        match = {
+//          field_name = "@tags"
+//          query      = "error"
+//          type       = "phrase"
+//        }
+//      }
+//    ]
+//  }
+//}
+
+
+
 //
+//  v6.x
 //
 //resource "kibana_dashboard" "cloudwatch_dashboard" {
 //  name = "Example Dashboard AAA"
