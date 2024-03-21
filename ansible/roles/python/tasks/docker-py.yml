@@ -1,0 +1,2 @@
+- name: Install Docker Python Tools
+  pip: name=docker-py version=1.9.0 #1.9.0 is the required version to work with Ansible Docker module as at Ansible 2.1.1

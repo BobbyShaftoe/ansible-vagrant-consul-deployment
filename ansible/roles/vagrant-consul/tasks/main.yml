@@ -1,0 +1,43 @@
+
+- name: "Remove trailing ansible directory from playbook_dir path"
+  set_fact: new_path="{{ playbook_dir | regex_replace('/ansible$', '') }}"
+
+- name: "Append directory path containing Vagrantfile"
+  set_fact: vagrant_path="{{ new_path }}/{{vagrant_dir}}"
+
+- name: "Output of new path"
+  debug: msg="{{ vagrant_path }}"
+
+- name: "Provision the Vagrant Machines"
+  command: vagrant up
+  args:
+    chdir: "{{ vagrant_path }}"
+  environment:
+    DEMO_BOX_NAME: "{{ vagrant_os_image }}"
+
+- name: "Get status of Vagrant Machines"
+  command: vagrant status
+  args:
+    chdir: "{{ vagrant_path }}"
+  register: vagrant_status
+
+- name: "Display status of Vagrant machines"
+  debug: msg="{{ vagrant_status }}"
+
+
+
+
+
+#- name: "Re-provision the Vagrant Machines with a reload"
+#  command: vagrant reload --provision
+#  args:
+#    chdir: "{{ vagrant_path }}"
+#
+#- name: "Get status of Vagrant Machines"
+#  command: vagrant status
+#  args:
+#    chdir: "{{ vagrant_path }}"
+#  register: vagrant_status
+#
+#- name: "Display status of Vagrant machines"
+#  debug: msg="{{ vagrant_status }}"

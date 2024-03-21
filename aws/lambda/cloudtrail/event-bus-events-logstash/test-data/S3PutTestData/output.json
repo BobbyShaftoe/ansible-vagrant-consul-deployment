@@ -1,0 +1,63 @@
+{
+  "event": {
+    "local_metafields": {
+      "generator": "lambda",
+      "backend": "python",
+      "source": "cloudtrail"
+    },
+    "_index": "cloudtrail-307525349211-2018.06.02",
+    "resources": [],
+    "source": "aws.ec2",
+    "version": "0",
+    "@timestamp": "2018-06-02T11:13: 47.992Z",
+    "port": 47898,
+    "detail-type": "AWS API Call via CloudTrail",
+    "@version": "1",
+    "host": "10.20.0.138",
+    "id": "e895c3aa-5902-d52e-cefd-645a4b1f9000",
+    "time": "2018-06-02T11:13:06Z",
+    "detail": {
+      "eventID": "2c3d2700-78af-4d67-a6cc-933eb11465f5",
+      "awsRegion": "us-east-1",
+      "eventVersion": "1.05",
+      "responseElements": {
+        "_return": true
+      },
+      "sourceIPAddress": "219.74.250.6",
+      "eventSource": "ec2.amazonaws.com",
+      "requestParameters": {
+        "instanceId": "i-0f726a227586e7f34",
+        "disableApiTermination": {
+          "value": false
+        }
+      },
+      "userAgent": "signin.amazonaws.com",
+      "userIdentity": {
+        "accessKeyId": "ASIAJK5ONG3256LK6IKQ",
+        "sessionContext": {
+          "attributes": {
+            "mfaAuthenticated": "true",
+            "creationDate": "2018-06-02T10:03:19Z"
+          }
+        },
+        "accountId": "307525349211",
+        "principalId": "307525349211",
+        "type": "Root",
+        "arn": "arn:aws:iam::307525349211:root",
+        "invokedBy": "signin.amazonaws.com"
+      },
+      "eventType": "AwsApiCall",
+      "requestID": "896882cb-6eb6-4c92-b694-7e328af13d7b",
+      "eventTime": "2018-06-02T11:13:06Z",
+      "eventName": "ModifyInstanceAttribute"
+    },
+    "region": "us-east-1",
+    "aws": {
+      "invoked_function_arn": "arn:aws:lambda:us-east-1:088841113972:function:test-trail-event-bus-logstash-function",
+      "function_name": "test-trail-event-bus-logstash-function",
+      "function_version": "$LATEST",
+      "memory_limit_in_mb": "128"
+    },
+    "account": "307525349211"
+  }
+}

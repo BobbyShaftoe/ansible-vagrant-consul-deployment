@@ -1,0 +1,47 @@
+{
+  "version": "0",
+  "id": "be801dfa-d357-a5b6-f22e-443a0fe578af",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.events",
+  "account": "307525349211",
+  "time": "2018-06-03T06:26:41Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.05",
+    "userIdentity": {
+      "type": "Root",
+      "principalId": "307525349211",
+      "arn": "arn:aws:iam::307525349211:root",
+      "accountId": "307525349211",
+      "accessKeyId": "ASIAJHLZTUWNGD3KPZBA",
+      "sessionContext": {
+        "attributes": {
+          "mfaAuthenticated": "true",
+          "creationDate": "2018-06-03T03:24:50Z"
+        }
+      },
+      "invokedBy": "signin.amazonaws.com"
+    },
+    "eventTime": "2018-06-03T06:26:41Z",
+    "eventSource": "events.amazonaws.com",
+    "eventName": "PutRule",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "219.74.250.6",
+    "userAgent": "signin.amazonaws.com",
+    "errorCode": "ValidationException",
+    "errorMessage": "Parameter ScheduleExpression is not valid.",
+    "requestParameters": {
+      "description": "Hourly Schedule",
+      "name": "hourlySchedule",
+      "state": "ENABLED",
+      "scheduleExpression": "cron(0 * * * * )"
+    },
+    "responseElements": null,
+    "requestID": "144cc1b6-66f7-11e8-925f-eb707e729a54",
+    "eventID": "18f15b2f-e8fc-4451-be26-8bb7e1f723e0",
+    "eventType": "AwsApiCall",
+    "apiVersion": "2015-10-07"
+  },
+  "es_index": "cloudtrail-307525349211-2018.06.03"
+}

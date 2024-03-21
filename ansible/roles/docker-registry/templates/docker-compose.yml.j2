@@ -1,0 +1,23 @@
+version: '2'
+services:
+    registry:
+      restart: always
+      image: registry:2
+      ports:
+        - 5000:5000
+      environment:
+        REGISTRY_AUTH: htpasswd
+        REGISTRY_AUTH_HTPASSWD_PATH: "{{ htpasswd_dir }}/htpasswd"
+        REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+      volumes:
+        - "{{ registry_path_local }}:{{ registry_path }}"
+        - "{{ registry_path_local }}{{ htpasswd_dir }}:{{ htpasswd_dir }}"
+
+    webserver:
+      restart: always
+      image: gists/lighttpd
+      ports:
+        - 80:80
+      volumes:
+        - "{{ webserver_path_local }}:{{ webserver_path }}"
+

@@ -1,0 +1,13 @@
+---
+
+# Docker registry is the actual docker registry run as a container behind HAProxy
+# Haproxy provides SSL termination for the registry, and also proxies for the webserver
+# The webserver is lighthttpd container and required during installation of ssl certificates
+# SSL certs are provided by letsencrypt using certbot
+
+- include: docker-registry.yml
+- include: webserver.yml
+- include: letsencrypt.yml
+- include: haproxy.yml
+- include: rsyslog.yml
+

@@ -1,0 +1,28 @@
+---
+
+- name: "Create docker group"
+  group:
+    name: docker
+    state: present
+
+- name: "Create docker user"
+  user:
+    name: docker
+    comment: "Docker user"
+    group: docker
+
+- name: "Ensure docker-compose is installed and available"
+  get_url:
+    url : "{{ docker_compose_url }}/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}"
+    dest: "{{ docker_compose_path }}"
+    mode: 'u+x,g+x,o+x'
+
+- name: "Create symlink to docker-compose binary"
+  file:
+    src: "{{ docker_compose_path }}"
+    dest: "{{ docker_compose_symlink }}"
+    owner: docker
+    group: docker
+    state: link
+    force: true
+

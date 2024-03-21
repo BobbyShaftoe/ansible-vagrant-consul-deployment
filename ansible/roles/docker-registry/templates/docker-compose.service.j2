@@ -1,0 +1,21 @@
+[Unit]
+Description=docker-compose service
+After=docker.service
+BindsTo=docker.service
+
+[Service]
+#Type=oneshot
+TimeoutStartSec=0
+TimeoutStopSec=30
+StandardOutput=syslog+console
+WorkingDirectory={{ registry_path_local }}{{ docker_compose_dir }}
+ExecStartPre=-{{ docker_compose_application_path }} -f docker-compose.yml kill
+ExecStart={{ docker_compose_application_path }} -f docker-compose.yml up
+ExecStop={{ docker_compose_application_path }} -f docker-compose.yml stop
+User=docker
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
+
+

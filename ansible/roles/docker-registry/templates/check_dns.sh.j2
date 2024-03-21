@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+DOMAIN={{ registry_domain }}
+[ ! -z "$1" ] && DOMAIN="$1"
+
+CHECK_COMMAND=./resolver.py
+SCRIPT="$0"
+
+cd $(dirname `echo $0`)
+
+while true; do
+    result=$(${CHECK_COMMAND} ${DOMAIN})
+        
+    if [[ $result =~ [0-9]{1,3}\.[0-9]{1,3} ]]; then
+        echo "Got IP address: $result"
+        ./get-ssl-certificates.sh ${DOMAIN}
+        systemctl restart haproxy
+        break
+	else
+		echo "$result"	
+	fi
+        
+	sleep 1
+done
+
+
+
+

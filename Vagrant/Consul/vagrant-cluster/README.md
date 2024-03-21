@@ -1,3 +1,22 @@
+## Update - Custom Changes
+
+> NOTE: There is some custom stuff on top of this
+ - additional hosts have been added to the Vagrantfile
+ - An existing base image was used for the machines (minimal/trusty64)
+ - There's a public/private keypair specific to a local user being used here, until changes in the next point
+ - The Ansible provisioner will be implemented, when actual services are added to these instances
+
+The specific command used to initially provision the machines is now:
+```
+DEMO_BOX_NAME="minimal/trusty64" vagrant up
+```
+
+Subsequent changes that added hosts to the Vagrantfile were actioned with this command:
+```
+vagrant reload --provision
+```
+
+
 # Vagrant Consul Demo
 
 This demo provides a very simple `Vagrantfile` that creates two Consul

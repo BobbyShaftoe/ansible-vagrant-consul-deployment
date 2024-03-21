@@ -1,0 +1,19 @@
+[Unit]
+Description=certbot service
+After=docker-compose.service
+
+
+[Service]
+#Type=oneshot
+TimeoutStartSec=600
+TimeoutStopSec=1200
+StandardOutput=syslog+console
+WorkingDirectory=/usr/local/sbin
+#ExecStartPre=
+ExecStart=/usr/local/sbin/check_dns.sh
+ExecStop=killall -TERM check_dns.sh
+User=root
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

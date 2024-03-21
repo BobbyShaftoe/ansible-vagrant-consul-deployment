@@ -1,0 +1,29 @@
+---
+
+- name: "remove haproxy.cfg file"
+  file:
+    path: /etc/haproxy/haproxy.cfg
+    state: absent
+
+- name: "Check that the haproxy.cfg doesn't exist"
+  stat:
+    path: /etc/haproxy/haproxy.cfg
+  register: stat_result
+
+- debug:
+    msg: "/etc/haproxy/haproxy.cfg doesn't exist"
+  when: stat_result.stat.exists == false
+
+- name: "Install conf.d/00-haproxy.cfg"
+  template:
+    src: templates/haproxy.cfg.j2
+    dest: /etc/haproxy/conf.d/00-haproxy.cfg
+    owner: root
+    group: root
+    mode: 0644
+
+- name: "Create HAProxy certs directories"
+  file:
+    path: /etc/haproxy/certs/{{ registry_domain }}
+    state: directory
+    mode: 0755

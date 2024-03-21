@@ -1,0 +1,9 @@
+
+
+- hosts: "local"
+  remote_user: jack
+  become: True
+  gather_facts: False
+  roles:
+    - "os-local"
+

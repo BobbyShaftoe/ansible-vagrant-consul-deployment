@@ -1,0 +1,68 @@
+[
+  {
+  "version": "0",
+  "id": "dce3dfff-0641-6acd-a73c-d46c55c38648",
+  "detail-type": "EC2 Instance State-change Notification",
+  "source": "aws.ec2",
+  "account": "088841113972",
+  "time": "2018-02-14T13:43:10Z",
+  "region": "us-east-1",
+  "resources": [
+    "arn:aws:ec2:us-east-1:088841113972:instance/i-0f7ec1a527bf4a0f4"
+  ],
+  "detail": {
+    "instance-id": "i-0f7ec1a527bf4a0f4",
+    "state": "stopped"
+  }
+},
+
+
+
+
+{
+  "version": "0",
+  "id": "97df7134-eee9-d421-ebd1-93ea16068f99",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.ec2",
+  "account": "088841113972",
+  "time": "2018-02-14T14:05:19Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.05",
+    "userIdentity": {
+      "type": "IAMUser",
+      "principalId": "AIDAISJV7OSD22UGLWATK",
+      "arn": "arn:aws:iam::088841113972:user/nicholas.birdsall",
+      "accountId": "088841113972",
+      "accessKeyId": "ASIAICYJ2OSGHX2DH3TQ",
+      "userName": "nicholas.birdsall",
+      "sessionContext": {
+        "attributes": {
+          "mfaAuthenticated": "false",
+          "creationDate": "2018-02-14T13:19:14Z"
+        }
+      },
+      "invokedBy": "signin.amazonaws.com"
+    },
+    "eventTime": "2018-02-14T14:05:19Z",
+    "eventSource": "ec2.amazonaws.com",
+    "eventName": "ModifyInstanceAttribute",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "219.74.250.6",
+    "userAgent": "signin.amazonaws.com",
+    "requestParameters": {
+      "instanceId": "i-0f7ec1a527bf4a0f4",
+      "disableApiTermination": {
+        "value": True
+      }
+    },
+    "responseElements": {
+      "_return": True
+    },
+    "requestID": "ef764340-a19b-497f-abaf-0b16fb05147e",
+    "eventID": "2f38de75-4c75-4626-a567-23fdd6b63808",
+    "eventType": "AwsApiCall"
+  }
+}
+]

@@ -1,0 +1,53 @@
+
+global
+    log         127.0.0.1 local2
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    maxconn     4000
+    user        haproxy
+    group       haproxy
+    daemon
+    tune.ssl.default-dh-param 2048
+    stats socket /var/lib/haproxy/stats
+defaults
+    mode                    http
+    log                     global
+    option                  httplog
+    option                  dontlognull
+    option http-server-close
+    option forwardfor
+    option                  redispatch
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+
+# --- main frontend which proxys to the backends ---
+frontend https
+#    bind *:80
+    bind *:443 ssl crt /etc/haproxy/certs/{{ registry_domain }}/bundle.pem
+    option forwardfor
+    http-request set-header X-Forwarded-Proto https if { ssl_fc }
+    acl host_docker hdr(host) -i {{ registry_domain }}
+#    acl letsencrypt path_beg -i /.well-known/acme-challenge/
+#    use_backend webserver if letsencrypt
+    use_backend docker if host_docker
+
+
+# --- docker backend which passes off to regular http at localhost:5000 ---
+backend docker
+    redirect scheme https if !{ ssl_fc }
+    server docker_registry 127.0.0.1:5000
+
+
+#backend webserver
+#    mode http
+#    option forwardfor
+#    http-request set-header X-Forwarded-Port %[dst_port]
+#    server webserver 127.0.0.1:8080 check
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#

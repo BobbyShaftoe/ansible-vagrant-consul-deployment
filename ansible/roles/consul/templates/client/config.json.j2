@@ -1,0 +1,17 @@
+{#  first create 'host_list' from hosts in 'consul-servers' #}
+{#  then create 'all_host_ips' using extract filter to get ips of hosts in 'host_list'  #}
+
+{% set host_list = groups['consul-servers'] %}
+{% set all_host_ips = host_list | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | join('","')  %}
+{
+    "server": {{ item['server_flag'] }},
+    "datacenter": "{{ data_center }}",
+    "data_dir": "{{ data_dir }}",
+    "ui_dir": "{{ ui_dir }}",
+    "encrypt": "{{ item['encryption_key'] }}",
+    "log_level": "INFO",
+    "enable_syslog": true,
+    "start_join": [ "{{ all_host_ips }}" ]
+}
+
+

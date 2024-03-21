@@ -1,0 +1,76 @@
+---
+# Copyright 2015, Jean-Philippe Evrard <jean-philippe@evrard.me>
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#TODO(evrardjp): when ansible 2 will be generally available, move to
+#the package syntax.
+#- name: Installs haproxy packages
+#  package:
+#    name: "{{ item }}"
+#    state: present
+#  with_items: haproxy_packagenames
+
+- name: Installs haproxy packages by yum
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ haproxy_packagenames }}"
+  when: ansible_os_family == 'RedHat'
+  notify: Restart haproxy
+  tags:
+    - haproxy-packages
+    - haproxy-yum-packages
+
+- name: Installs haproxy packages by apt
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ haproxy_packagenames }}"
+  when: ansible_os_family == 'Debian'
+  notify: Restart haproxy
+  tags:
+    - haproxy-packages
+    - haproxy-apt-packages
+
+- name: Installs haproxy packages by pkgin
+  pkgin:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ haproxy_packagenames }}"
+  when: ansible_os_family == 'Solaris'
+  notify: Restart haproxy
+  tags:
+    - haproxy-packages
+    - haproxy-pkgin-packages
+
+#Disabling the conf.d idea to be closer to upstream.
+#- name: Replace haproxy defaults
+#  template:
+#    src: default_haproxy.j2
+#    dest: /etc/default/haproxy
+#  when: ansible_os_family == 'Debian'
+#- name: Replace haproxy init script to allow conf.d
+#  copy:
+#    src: haproxy.sh
+#    dest: /etc/init.d/haproxy
+#    mode: "0755"
+#  when: ansible_os_family == 'Debian'
+
+- name: Enable the service
+  service:
+    name: "{{ haproxy_service_name }}"
+    enabled: yes
+  tags:
+    - haproxy-init
+    - haproxy-service

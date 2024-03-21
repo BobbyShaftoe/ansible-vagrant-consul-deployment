@@ -1,0 +1,53 @@
+{
+    "version": "0",
+    "id": "37f17e80-5bf1-59f6-3f42-c0fe8badd196",
+    "detail-type": "AWS API Call via CloudTrail",
+    "source": "aws.s3",
+    "account": "307525349211",
+    "time": "2018-05-26T20:16:52Z",
+    "region": "us-east-1",
+    "resources": [],
+    "detail": {
+        "eventVersion": "1.05",
+        "userIdentity": {
+            "type": "AWSService",
+            "invokedBy": "cloudtrail.amazonaws.com"
+        },
+        "eventTime": "2018-05-26T20:16:52Z",
+        "eventSource": "s3.amazonaws.com",
+        "eventName": "PutObject",
+        "awsRegion": "us-east-1",
+        "sourceIPAddress": "cloudtrail.amazonaws.com",
+        "userAgent": "cloudtrail.amazonaws.com",
+        "requestParameters": {
+            "bucketName": "cloud-trail-current",
+            "x-amz-acl": "bucket-owner-full-control",
+            "x-amz-server-side-encryption": "AES256",
+            "key": "AWSLogs/307525349211/CloudTrail-Digest/ap-northeast-1/2018/05/26/307525349211_CloudTrail-Digest_ap-northeast-1_cloud-trail-main_us-east-1_20180526T194817Z.json.gz"
+        },
+        "responseElements": {
+            "x-amz-server-side-encryption": "AES256"
+        },
+        "additionalEventData": {
+            "SSEApplied": "SSE_S3",
+            "x-amz-id-2": "+V8v+8PMRhNT4ucfcQHBgpUS2m1G2HeM8plVxAO8k8LEf845B8KOGQ/1KqgrYBsrXav7vg4cOrs="
+        },
+        "requestID": "CC1F0DD9394748F1",
+        "eventID": "1e412ebb-98ac-4efc-a311-f9e4bed4a043",
+        "readOnly": false,
+        "resources": [
+            {
+                "type": "AWS::S3::Object",
+                "ARN": "arn:aws:s3:::cloud-trail-current/AWSLogs/307525349211/CloudTrail-Digest/ap-northeast-1/2018/05/26/307525349211_CloudTrail-Digest_ap-northeast-1_cloud-trail-main_us-east-1_20180526T194817Z.json.gz"
+            },
+            {
+                "accountId": "307525349211",
+                "type": "AWS::S3::Bucket",
+                "ARN": "arn:aws:s3:::cloud-trail-current"
+            }
+        ],
+        "eventType": "AwsApiCall",
+        "recipientAccountId": "307525349211",
+        "sharedEventID": "cc9fae87-61f8-4d4f-a1dd-f0db56e68e4b"
+    }
+}

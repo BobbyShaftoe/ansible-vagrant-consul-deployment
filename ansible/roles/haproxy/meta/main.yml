@@ -1,0 +1,27 @@
+---
+galaxy_info:
+  author: Jean-Philippe Evrard
+  description: Deploying HAProxy with simple but flexible configuration
+  license: Apache
+  min_ansible_version: 1.5
+  platforms:
+  - name: EL
+    versions:
+    - 5
+    - 6
+    - 7
+  - name: SmartOS
+    versions:
+    - any
+  - name: Ubuntu
+    versions:
+    - trusty
+  - name: Debian
+    versions:
+    - jessie
+    - wheezy
+  categories:
+  - clustering
+  - networking
+  - system
+dependencies: []

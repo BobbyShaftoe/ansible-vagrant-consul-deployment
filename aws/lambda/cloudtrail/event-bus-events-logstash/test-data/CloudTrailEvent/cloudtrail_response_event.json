@@ -1,0 +1,42 @@
+{
+  "version": "0",
+  "id": "10045586-dedf-ca7e-cf18-c8a176a4623a",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.iam",
+  "account": "307525349211",
+  "time": "2018-06-03T06:34:44Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.02",
+    "userIdentity": {
+      "type": "Root",
+      "principalId": "307525349211",
+      "arn": "arn:aws:iam::307525349211:root",
+      "accountId": "307525349211",
+      "accessKeyId": "ASIAJNPKVCO5FNJ32AHQ",
+      "sessionContext": {
+        "attributes": {
+          "mfaAuthenticated": "true",
+          "creationDate": "2018-06-03T03:24:50Z"
+        }
+      },
+      "invokedBy": "signin.amazonaws.com"
+    },
+    "eventTime": "2018-06-03T06:34:44Z",
+    "eventSource": "iam.amazonaws.com",
+    "eventName": "AttachUserPolicy",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "219.74.250.6",
+    "userAgent": "signin.amazonaws.com",
+    "requestParameters": {
+      "userName": "test",
+      "policyArn": "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+    },
+    "responseElements": null,
+    "requestID": "341eb48d-66f8-11e8-9e87-9d4ac7fa3889",
+    "eventID": "1479eee7-2bd4-45a7-9deb-3a46becb77fa",
+    "eventType": "AwsApiCall"
+  },
+  "es_index": "cloudtrail-307525349211-2018.06.03"
+}

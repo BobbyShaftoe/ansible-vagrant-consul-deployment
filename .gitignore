@@ -2,6 +2,9 @@
 .AppleDouble
 .LSOverride
 
+# Virtualenv
+.virtualenv
+
 # Cache
 .cache
 
@@ -49,7 +52,8 @@ virtual_tmp
 
 # My style .ARCHIVE directory
 .ARCHIVE
-
+# My style .PRIVATE directory
+.PRIVATE
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100

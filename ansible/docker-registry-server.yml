@@ -1,0 +1,17 @@
+---
+
+- name: Install Epel-Release, Docker Engine, Python Tools
+  hosts: all
+  remote_user: centos
+  become: True
+  gather_facts: True
+  roles:
+    - epel
+    - python
+    - geerlingguy.git
+    - geerlingguy.certbot
+    - haproxy
+    - docker
+    - docker-registry
+
+
